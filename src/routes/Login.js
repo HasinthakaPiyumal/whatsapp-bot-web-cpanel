@@ -35,6 +35,7 @@ function LoginPage() {
 	const [password, setPassword] = useState("");
 	const [passState, setPassState] = useState(true);
     const navigate = useNavigate()
+
     function onLogged(data) {
         setAccessTokenCookie(data.accessToken)
         navigate('/dashboard');
@@ -42,7 +43,7 @@ function LoginPage() {
     
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		alertRequest.post("/panel/login", { email, password }, {}, onLogged);
+		alertRequest.post("/panel/login", { email, password }, onLogged);
 	};
 
 	return (
