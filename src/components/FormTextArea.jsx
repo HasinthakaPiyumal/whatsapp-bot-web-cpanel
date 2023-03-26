@@ -7,9 +7,10 @@ import {
 	InputGroup,
 	InputRightElement,
 	Text,
+    Textarea,
 } from "@chakra-ui/react";
 
-const FormInput = (prop) => {
+const FormTextArea = (prop) => {
 	function titled(str) {
 		if (str === undefined) return;
 		return str.charAt(0).toUpperCase() + str.slice(1);
@@ -32,7 +33,7 @@ const FormInput = (prop) => {
 				)}
 			</Flex>
 			<InputGroup>
-				<Input
+				<Textarea
 					placeholder={titled(prop.placeholder || prop.placeHolder)}
 					onChange={prop.onChange}
 					value={prop.value}
@@ -48,7 +49,7 @@ const FormInput = (prop) => {
 					border="none"
 					_placeholder={{ color: "#6c7293" }}
 					mt={titled(prop.label) && "5px"}
-				></Input>
+				></Textarea>
 				{prop.rightElement && (
 					<InputRightElement>
 						{prop.rightElement}
@@ -59,4 +60,4 @@ const FormInput = (prop) => {
 	);
 };
 
-export default FormInput;
+export default FormTextArea;

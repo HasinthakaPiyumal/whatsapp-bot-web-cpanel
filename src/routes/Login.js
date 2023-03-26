@@ -17,17 +17,32 @@ import "../styles/login.css";
 import FormInput from "../components/FormInput";
 import FormButton from "../components/FormButton";
 
-// import alert
-import alert from "../services/alert";
+// import alertRequest
+import alertRequest from "../services/alertRequest";
+
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+
+function setAccessTokenCookie(accessToken, expiration=60*60*24) {
+	const date = new Date();
+	date.setTime(date.getTime() + expiration * 1000); // Convert expiration from seconds to milliseconds
+	Cookies.set("access_token", accessToken, { expires: date });
+}
 
 function LoginPage() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-
+	const [passState, setPassState] = useState(true);
+    const navigate = useNavigate()
+    function onLogged(data) {
+        setAccessTokenCookie(data.accessToken)
+        navigate('/dashboard');
+    }
+    
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		console.log(email, password);
-		alert.success("asdas");
+		alertRequest.post("/panel/login", { email, password }, {}, onLogged);
 	};
 
 	return (
@@ -63,10 +78,28 @@ function LoginPage() {
 					<FormInput
 						label="Password"
 						value={password}
+						type={passState ? "password" : "text"}
 						onChange={(e) => {
 							setPassword(e.target.value);
 						}}
 						required
+						rightElement={
+							passState ? (
+								<ViewIcon
+									cursor="pointer"
+									height={38}
+									marginTop={2.5}
+									onClick={() => setPassState(false)}
+								/>
+							) : (
+								<ViewOffIcon
+									cursor="pointer"
+									height={38}
+									marginTop={2.5}
+									onClick={() => setPassState(true)}
+								/>
+							)
+						}
 					/>
 				</VStack>
 				<HStack mt="25px" justifyContent="space-between">
