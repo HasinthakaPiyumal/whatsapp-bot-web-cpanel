@@ -24,23 +24,27 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
-function setAccessTokenCookie(accessToken, expiration=60*60*24) {
+function setAccessTokenCookie(accessToken, expiration = 60 * 60 * 24) {
 	const date = new Date();
 	date.setTime(date.getTime() + expiration * 1000); // Convert expiration from seconds to milliseconds
-	Cookies.set("access_token", accessToken, { expires: date });
+	Cookies.set("access_token", accessToken, {
+		expires: date,
+	});
 }
 
 function LoginPage() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [passState, setPassState] = useState(true);
-    const navigate = useNavigate()
+	const navigate = useNavigate();
 
-    function onLogged(data) {
-        setAccessTokenCookie(data.accessToken)
-        navigate('/dashboard');
-    }
-    
+	function onLogged(data) {
+		console.log(data);
+		setAccessTokenCookie(data.accessToken);
+		// navigate("/dashboard");
+		window.location.href = "/dashboard";
+	}
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		alertRequest.post("/panel/login", { email, password }, onLogged);
