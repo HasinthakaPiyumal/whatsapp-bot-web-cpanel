@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import Container from "../../components/Container";
+import React, { useEffect, useState } from "react";
+import Container from "../../../components/Container";
 import {
 	Box,
 	Flex,
@@ -13,12 +13,15 @@ import {
 	Text,
 	VStack,
 } from "@chakra-ui/react";
-import FormInput from "../../components/FormInput";
-import FormButton from "../../components/FormButton";
-import alertRequest from "../../services/alertRequest";
-import FormTextArea from "../../components/FormTextArea";
+import FormInput from "../../../components/FormInput";
+import FormButton from "../../../components/FormButton";
+import alertRequest from "../../../services/alertRequest";
+import FormTextArea from "../../../components/FormTextArea";
+import requests from "../../../util/requests";
 
-const SpecialKeywords = () => {
+import { useLocation } from "react-router-dom";
+
+const SpecialKeywordsEdit = (props) => {
 	const [message1, setMessage1] = useState();
 	const [messageId1, setMessageId1] = useState();
 	const [messageOptions1, setMessageOptions1] = useState([]);
@@ -244,7 +247,7 @@ const SpecialKeywords = () => {
 			() => onFinishRemoveKeyword(id)
 		);
 	}
-	function onActivateKeyword(id,status) {
+	function onActivateKeyword(id, status) {
 		let newKeywords = [];
 		keywords.forEach((keyword) => {
 			if (keyword.id === id) {
@@ -266,16 +269,52 @@ const SpecialKeywords = () => {
 				messageId3: messageId3,
 				status: status,
 			},
-			() => onActivateKeyword(id,status)
+			() => onActivateKeyword(id, status)
 		);
 	}
+
+	async function getData(id) {
+		console.log(id);
+		let data = await requests.post(
+			"/special-messages/view",
+			{},
+			{ id: id }
+		);
+		console.log(data);
+		data = data.data;
+		setMessage1(data.lang1.text);
+		setMessageId1(data.lang1.id);
+		setMessageOptions1(data.lang1.items);
+
+		setMessage2(data.lang2.text);
+		setMessageId2(data.lang2.id);
+		setMessageOptions2(data.lang2.items);
+
+		setMessage3(data.lang3.text);
+		setMessageId3(data.lang3.id);
+		setMessageOptions3(data.lang3.items);
+
+		setKeyword("");
+		setKeywords([
+			{ id: data.id, keyword: data.keyword, status: data.status },
+		]);
+	}
+
+	const location = useLocation();
+	useEffect(() => {
+		const params = new URLSearchParams(location.search);
+		const id = params.get("id");
+		console.log(id);
+		getData(parseInt(id));
+	}, []);
+
 	return (
 		<Container>
 			{/* ================================ */}
 			{/*      message section start       */}
 			{/* ================================ */}
 			<Heading size={10} mb={5}>
-				Add Special Response Message
+				Update Special Response Message
 			</Heading>
 			<Tabs isFitted variant="enclosed">
 				<TabList mb="1em">
@@ -826,4 +865,4 @@ const SpecialKeywords = () => {
 	);
 };
 
-export default SpecialKeywords;
+export default SpecialKeywordsEdit;

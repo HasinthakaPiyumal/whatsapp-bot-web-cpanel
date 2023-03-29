@@ -16,7 +16,7 @@ const router = [
 		element: <RootLayout />,
 		loader: async () => {
 			try {
-                console.log(accessToken)
+				console.log(accessToken);
 				const isAuthenticated = await axios.post(
 					process.env.REACT_APP_SOCKET_CONNECTION + "/authenticate",
 					{ accessToken: accessToken }
@@ -32,6 +32,12 @@ const router = [
 		children: sidebarItems.map((item) => ({
 			path: item.path,
 			element: item.page && <item.page />,
+			children:
+				item.children &&
+				item.children.map((item) => ({
+					path: item.path,
+					element: item.page && <item.page />,
+				})),
 		})),
 	},
 ];

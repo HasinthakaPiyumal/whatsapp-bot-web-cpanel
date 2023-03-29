@@ -10,7 +10,7 @@ const get = async (path = "", headers={}, body) => {
 	try {
 		const tRes = await axios.get(url, {
 			headers,
-			body,
+			params:body,
 			withCredentials: true,
 		});
 		res = res = tRes.data;

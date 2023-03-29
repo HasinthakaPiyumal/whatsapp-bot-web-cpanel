@@ -49,6 +49,7 @@ const FormTextArea = (prop) => {
 					border="none"
 					_placeholder={{ color: "#6c7293" }}
 					mt={titled(prop.label) && "5px"}
+                    sx={prop.areaSx}
 				></Textarea>
 				{prop.rightElement && (
 					<InputRightElement>

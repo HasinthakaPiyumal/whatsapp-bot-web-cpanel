@@ -1,4 +1,7 @@
 import {
+	Badge,
+	Box,
+	Center,
 	Table,
 	TableContainer,
 	Tbody,
@@ -8,6 +11,7 @@ import {
 	Tr,
 } from "@chakra-ui/react";
 import React from "react";
+import ActionDotsVert from "./ActionDotsVert";
 
 const FullTable = (prop) => {
 	return (
@@ -57,6 +61,85 @@ const FullTable = (prop) => {
 									{id + 1}
 								</Td>
 								{prop.columns.map((column) => {
+									if (
+										column.key === "status" &&
+										column.head.toLowerCase() === "status"
+									) {
+										let item;
+										if (row[column.key] === 1) {
+											item = (
+												<div
+													style={{
+														padding: 8,
+														background: "#00d25bee",
+														width: 70,
+														fontSize: 13,
+														fontWeight: "bold",
+														color: "white",
+														display: "flex",
+														justifyContent:
+															"center",
+														alignItems: "Center",
+														borderRadius: "4px",
+														lineHeight: "12px",
+													}}
+												>
+													Running
+												</div>
+											);
+										} else if (row[column.key] === 0) {
+											item = (
+												<div
+													style={{
+														padding: 8,
+														background: "#FC424Aee",
+														width: 70,
+														fontSize: 13,
+														fontWeight: "bold",
+														color: "white",
+														display: "flex",
+														justifyContent:
+															"center",
+														alignItems: "Center",
+														borderRadius: "4px",
+														lineHeight: "12px",
+													}}
+												>
+													Disabled
+												</div>
+											);
+										}
+										return (
+											<Td
+												py="10px"
+												color="#6c7293"
+												borderBottomColor="#2A2D3A"
+												width={100}
+											>
+												{item}
+											</Td>
+										);
+									}
+									if (
+										column.head.toLowerCase() === "action"
+									) {
+										return (
+											<Td
+												py="1px"
+												color="#6c7293"
+												borderBottomColor="#2A2D3A"
+												width={20}
+												textAlign="center"
+											>
+												<ActionDotsVert
+													id={row.id}
+													tableId={prop.tableId}
+                                                    loadTable={prop.loadTable}
+                                                    editPath={prop.editPath}
+												/>
+											</Td>
+										);
+									}
 									return (
 										<Td
 											py="10px"
