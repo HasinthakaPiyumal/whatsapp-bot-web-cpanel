@@ -26,24 +26,10 @@ const LevelWiseKeywords = () => {
 
 	return (
 		<Container>
-			{data &&
-				data.map((item,index) => (
-					<Accordion allowToggle>
-						<AccordionItem>
-							<h2>
-								<AccordionButton>
-									<Box as="span" flex="1" textAlign="left">
-										Level 02 - OPTION {index+1}
-									</Box>
-									<AccordionIcon />
-								</AccordionButton>
-							</h2>
-							<AccordionPanel pb={4}>
-								<LevelWiseAccordion data={item} />
-							</AccordionPanel>
-						</AccordionItem>
-					</Accordion>
-				))}
+			<Heading size={10} mb={5}>
+				Update Main Menu
+			</Heading>
+			{data.length > 0 && <LevelWiseAccordion data={data && data[1]} />}
 		</Container>
 	);
 };

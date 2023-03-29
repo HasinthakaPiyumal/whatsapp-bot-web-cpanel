@@ -13,6 +13,7 @@ import { AddIcon } from "@chakra-ui/icons";
 import FormInput from "./FormInput";
 import FormButton from "./FormButton";
 import alertRequest from "../services/alertRequest";
+import { useRef } from "react";
 
 const LevelWiseAccordion = (prop) => {
 	const [data, setData] = useState(prop.data);
@@ -34,6 +35,7 @@ const LevelWiseAccordion = (prop) => {
 		};
 		alertRequest.post("/level/update", formData);
 	}
+    const imgRef1 = useRef();
 	return (
 		<div>
 			<Flex flexDirection="column">
@@ -96,7 +98,12 @@ const LevelWiseAccordion = (prop) => {
 										Drop file to upload
 									</Text>
 									<Text fontSize={10}>or</Text>
-									<Button width="80%" variant="solid">
+									<Button
+										width="100px"
+										h="30px"
+										fontSize="13px"
+										variant="solid"
+									>
 										Select File
 									</Button>
 									<Text fontSize={10} mt={1} color="gray.400">
@@ -107,7 +114,7 @@ const LevelWiseAccordion = (prop) => {
 						</Flex>
 					</Flex>
 				</Flex>
-				{data.data.map((item, index) => (
+				{/* {data.data.map((item, index) => (
 					<FormInput
 						placeholder="Enter option display text"
 						label={index === 0 ? "Selection Data" : undefined}
@@ -115,7 +122,7 @@ const LevelWiseAccordion = (prop) => {
 						value={item && item.text_1}
 						onChange={(e) => console.log(e)}
 					/>
-				))}
+				))} */}
 			</Flex>
 			<Divider orientation="horizontal" marginY="30px" />
 
@@ -179,7 +186,12 @@ const LevelWiseAccordion = (prop) => {
 										Drop file to upload
 									</Text>
 									<Text fontSize={10}>or</Text>
-									<Button width="80%" variant="solid">
+									<Button
+										width="100px"
+										h="30px"
+										fontSize="13px"
+										variant="solid"
+									>
 										Select File
 									</Button>
 									<Text fontSize={10} mt={1} color="gray.400">
@@ -190,7 +202,7 @@ const LevelWiseAccordion = (prop) => {
 						</Flex>
 					</Flex>
 				</Flex>
-				{data.data.map((item, index) => (
+				{/* {data.data.map((item, index) => (
 					<FormInput
 						placeholder="Enter option display text"
 						label={index === 0 ? "Selection Data" : undefined}
@@ -198,7 +210,7 @@ const LevelWiseAccordion = (prop) => {
 						value={item && item.text_2}
 						onChange={(e) => console.log(e)}
 					/>
-				))}
+				))} */}
 			</Flex>
 			<Divider orientation="horizontal" marginY="30px" />
 
@@ -237,7 +249,7 @@ const LevelWiseAccordion = (prop) => {
 							alignItems="center"
 							textAlign="center"
 						>
-							{1 == 2 ? (
+							{1 == 1 ? (
 								<>
 									<Image
 										boxSize="170px"
@@ -250,8 +262,9 @@ const LevelWiseAccordion = (prop) => {
 										position="absolute"
 										zIndex="modal"
 										bottom={0}
-										width="80%"
+										width="100%"
 										variant="solid"
+                                        onClick={()=>imgRef1.current.click()}
 									>
 										Change
 									</Button>
@@ -262,18 +275,26 @@ const LevelWiseAccordion = (prop) => {
 										Drop file to upload
 									</Text>
 									<Text fontSize={10}>or</Text>
-									<Button width="80%" variant="solid">
+									<Button
+										width="100px"
+										h="30px"
+										fontSize="13px"
+										variant="solid"
+                                        onClick={()=>imgRef1.current.click()}
+									>
 										Select File
 									</Button>
+                                    
 									<Text fontSize={10} mt={1} color="gray.400">
 										Maximum upload file size: 10 MB
 									</Text>
 								</>
 							)}
+                            <input ref={imgRef1} style={{position:"absolute",opacity:0,pointerEvents:"none"}} type="file" accept="image/*" onChange={()=>{}} />
 						</Flex>
 					</Flex>
 				</Flex>
-				{data.data.map((item, index) => (
+				{/* {data.data.map((item, index) => (
 					<FormInput
 						placeholder="Enter option display text"
 						label={index === 0 ? "Selection Data" : undefined}
@@ -281,14 +302,11 @@ const LevelWiseAccordion = (prop) => {
 						value={item && item.text_3}
 						onChange={(e) => console.log(e)}
 					/>
-				))}
+				))} */}
 			</Flex>
 			<Divider orientation="horizontal" marginY="30px" />
 			<Flex justifyContent="end">
-				<FormButton
-					onClick={onUpdate}
-					sx={{ width: "120px" }}
-				>
+				<FormButton onClick={onUpdate} sx={{ width: "120px" }}>
 					Update Level
 				</FormButton>
 			</Flex>

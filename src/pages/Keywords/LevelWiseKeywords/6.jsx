@@ -17,8 +17,10 @@ import FormButton from "../../../components/FormButton";
 const LevelWiseKeywords = () => {
 	const [data, setData] = useState([]);
 	async function getLevelsData() {
-		const data = await requests.get("/level/list", {}, { level: 2 });
+        
+		const data = await requests.get("/level/list",{}, { level: 6 });
 		setData(data.data);
+		console.log(data.data);
 	}
 	useEffect(() => {
 		getLevelsData();

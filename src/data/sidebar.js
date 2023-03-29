@@ -17,6 +17,7 @@ import LevelWiseKeywordsLevel2 from "../pages/Keywords/LevelWiseKeywords/2";
 import LevelWiseKeywordsLevel3 from "../pages/Keywords/LevelWiseKeywords/3";
 import LevelWiseKeywordsLevel4 from "../pages/Keywords/LevelWiseKeywords/4";
 import LevelWiseKeywordsLevel5 from "../pages/Keywords/LevelWiseKeywords/5";
+import LevelWiseKeywordsLevel6 from "../pages/Keywords/LevelWiseKeywords/6";
 import SpecialKeywordsList from "../pages/Keywords/SpecialKeywords/SpecialKeywordsList";
 import SpecialKeywordsEdit from "../pages/Keywords/SpecialKeywords/SpecialKeywordsEdit";
 import SpecialKeywordsLayout from "../layouts/SpecialKeywordsLayout"
@@ -66,33 +67,33 @@ export const sidebarItems = [
 		children: [
 			{
 				title: "01 - Main Menu",
-				path: "level-01",
+				path: "main-menu",
 				page: LevelWiseKeywordsLevel1,
 			},
 			{
-				title: "02 - About/Ages",
-				path: "level-02",
+				title: "02 - About",
+				path: "about",
 				page: LevelWiseKeywordsLevel2,
 			},
 			{
-				title: "03 - Course Selection",
-				path: "level-03",
+				title: "03 - Age Selection",
+				path: "ages",
 				page: LevelWiseKeywordsLevel3,
 			},
 			{
-				title: "04 - Course Register",
-				path: "level-04",
+				title: "04 - Course Selection",
+				path: "courses",
 				page: LevelWiseKeywordsLevel4,
 			},
 			{
 				title: "05 - Details Form",
-				path: "level-05",
+				path: "form",
 				page: LevelWiseKeywordsLevel5,
 			},
 			{
 				title: "06 - Thanks Message",
-				path: "level-06",
-				page: LevelWiseKeywordsLevel5,
+				path: "thanks",
+				page: LevelWiseKeywordsLevel6,
 			},
 		],
 	},

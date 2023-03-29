@@ -17,7 +17,7 @@ import FormButton from "../../../components/FormButton";
 const LevelWiseKeywords = () => {
 	const [data, setData] = useState([]);
 	async function getLevelsData() {
-		const data = await requests.get("/level/list", {}, { level: 4 });
+		const data = await requests.get("/level/list", {}, { level: 3 });
 		setData(data.data);
 	}
 	useEffect(() => {
@@ -26,24 +26,10 @@ const LevelWiseKeywords = () => {
 
 	return (
 		<Container>
-			{data &&
-				data.map((item,index) => (
-					<Accordion allowToggle>
-						<AccordionItem>
-							<h2>
-								<AccordionButton>
-									<Box as="span" flex="1" textAlign="left">
-										Level 04 - OPTION {index+1}
-									</Box>
-									<AccordionIcon />
-								</AccordionButton>
-							</h2>
-							<AccordionPanel pb={4}>
-								<LevelWiseAccordion data={data && data[0]} />
-							</AccordionPanel>
-						</AccordionItem>
-					</Accordion>
-				))}
+			<Heading size={10} mb={5}>
+				Update Main Menu
+			</Heading>
+			{data.length > 0 && <LevelWiseAccordion data={data && data[0]} />}
 		</Container>
 	);
 };
