@@ -21,7 +21,6 @@ import { useRef } from "react";
 import alertRequest from "../services/alertRequest";
 
 const Courses = () => {
-	const [code, setCode] = useState();
 	const [title1, setTitle1] = useState();
 	const [title2, setTitle2] = useState();
 	const [title3, setTitle3] = useState();
@@ -38,7 +37,6 @@ const Courses = () => {
 
 	function submit() {
 		const data = {
-			code: code,
 			title1: title1,
 			title2: title2,
 			title3: title3,
@@ -51,22 +49,13 @@ const Courses = () => {
 			description2: description2,
 			description3: description3,
 		};
-        console.log(data);
 		alertRequest.post("/course/add", data);
 	}
 
 	return (
 		<Container>
 			<VStack spacing="10px">
-				<FormInput
-					label="Code - Unique Code (ex - AB)"
-					placeholder="course code - AB"
-					onChange={(e) => {
-						setCode(e.target.value);
-					}}
-					value={code}
-					required
-				/>
+
 				<FormInput
 					label="course name"
 					placeholder="course name english"
