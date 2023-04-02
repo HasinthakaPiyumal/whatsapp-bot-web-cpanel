@@ -6,6 +6,7 @@ import {
 	Flex,
 	HStack,
 	Image,
+	Input,
 	Text,
 	VStack,
 } from "@chakra-ui/react";
@@ -17,6 +18,26 @@ import { useRef } from "react";
 
 const LevelWiseAccordion = (prop) => {
 	const [data, setData] = useState(prop.data);
+
+	const [selectedFile1, setSelectedFile1] = useState(null);
+	const [selectedFile2, setSelectedFile2] = useState(null);
+	const [selectedFile3, setSelectedFile3] = useState(null);
+	const [fileName1, setFileName1] = useState(prop.data.image_1==="null"?"":prop.data.image_1);
+	const [fileName2, setFileName2] = useState(prop.data.image_2==="null"?"":prop.data.image_2);
+	const [fileName3, setFileName3] = useState(prop.data.image_3==="null"?"":prop.data.image_3);
+
+	const handleFileChange1 = (event) => {
+		setSelectedFile1(event.target.files[0]);
+		setFileName1(event.target.files[0].name);
+	};
+	const handleFileChange2 = (event) => {
+		setSelectedFile2(event.target.files[0]);
+		setFileName2(event.target.files[0].name);
+	};
+	const handleFileChange3 = (event) => {
+		setSelectedFile3(event.target.files[0]);
+		setFileName3(event.target.files[0].name);
+	};
 	function handleDataChange(val, key) {
 		let newData = { ...data };
 		newData[key] = val;
@@ -24,18 +45,33 @@ const LevelWiseAccordion = (prop) => {
 	}
 	function onUpdate() {
 		// id, text1, text2, text3, image1, image2, image3
-		const formData = {
-			id: data.id,
-			text1: data.text_1,
-			text2: data.text_2,
-			text3: data.text_3,
-			image1: data.image_1,
-			image2: data.image_3,
-			image3: data.image_3,
-		};
-		alertRequest.post("/level/update", formData);
+		// const formData = {
+		// 	id: data.id,
+		// 	text1: data.text_1,
+		// 	text2: data.text_2,
+		// 	text3: data.text_3,
+		// 	image1: data.image_1,
+		// 	image2: data.image_3,
+		// 	image3: data.image_3,
+		// };
+		const formData = new FormData();
+		formData.append("id", data.id);
+		formData.append("text1", data.text_1);
+		formData.append("text2", data.text_2);
+		formData.append("text3", data.text_3);
+		formData.append("file1", selectedFile1);
+		formData.append("file2", selectedFile2);
+		formData.append("file3", selectedFile3);
+
+		alertRequest.post("/level/update", formData, () => {}, {}, false);
 	}
-    const imgRef1 = useRef();
+	function removeImg(language, callback) {
+		alertRequest.post(
+			"/level/remove-image",
+			{ id: data.id, language: language },
+			callback
+		);
+	}
 	return (
 		<div>
 			<Flex flexDirection="column">
@@ -58,7 +94,7 @@ const LevelWiseAccordion = (prop) => {
 					/>
 					<Flex w="170px" alignItems="start" flexDirection="column">
 						<Text fontSize={12} lineHeight="26px" color="blue.200">
-							Message Image
+							Attachment
 						</Text>
 						<Flex
 							border="1px dashed"
@@ -73,44 +109,56 @@ const LevelWiseAccordion = (prop) => {
 							alignItems="center"
 							textAlign="center"
 						>
-							{1 == 2 ? (
-								<>
-									<Image
-										boxSize="170px"
-										objectFit="cover"
-										src="https://bit.ly/dan-abramov"
-										alt="Dan Abramov"
-									/>
-
-									<Button
-										position="absolute"
-										zIndex="modal"
-										bottom={0}
-										width="80%"
-										variant="solid"
-									>
-										Change
-									</Button>
-								</>
-							) : (
+							{
 								<>
 									<Text fontSize={14}>
 										Drop file to upload
 									</Text>
 									<Text fontSize={10}>or</Text>
+									<Input
+										type="file"
+										id="file1"
+										name="file1"
+										onChange={handleFileChange1}
+										display="none"
+									/>
 									<Button
 										width="100px"
 										h="30px"
 										fontSize="13px"
 										variant="solid"
+										as="label"
+										htmlFor="file1"
 									>
 										Select File
 									</Button>
 									<Text fontSize={10} mt={1} color="gray.400">
-										Maximum upload file size: 10 MB
+										{!fileName1
+											? "Maximum upload file size: 1 GB"
+											: fileName1.substring(0, 30) +
+											  (fileName1.length > 30
+													? "..."
+													: "")}
 									</Text>
+									{fileName1 && (
+										<Button
+											width="70px"
+											h="20px"
+											fontSize="11px"
+											background="red.500"
+											_hover={{ background: "red.600" }}
+											onClick={() =>
+												removeImg(1, () => {
+													setFileName1("");
+													setSelectedFile1("");
+												})
+											}
+										>
+											Remove
+										</Button>
+									)}
 								</>
-							)}
+							}
 						</Flex>
 					</Flex>
 				</Flex>
@@ -146,7 +194,7 @@ const LevelWiseAccordion = (prop) => {
 					/>
 					<Flex w="170px" alignItems="start" flexDirection="column">
 						<Text fontSize={12} lineHeight="26px" color="blue.200">
-							Message Image
+							Attachment
 						</Text>
 						<Flex
 							border="1px dashed"
@@ -161,44 +209,56 @@ const LevelWiseAccordion = (prop) => {
 							alignItems="center"
 							textAlign="center"
 						>
-							{1 == 2 ? (
-								<>
-									<Image
-										boxSize="170px"
-										objectFit="cover"
-										src="https://bit.ly/dan-abramov"
-										alt="Dan Abramov"
-									/>
-
-									<Button
-										position="absolute"
-										zIndex="modal"
-										bottom={0}
-										width="80%"
-										variant="solid"
-									>
-										Change
-									</Button>
-								</>
-							) : (
+							{
 								<>
 									<Text fontSize={14}>
 										Drop file to upload
 									</Text>
 									<Text fontSize={10}>or</Text>
+									<Input
+										type="file"
+										id="file2"
+										name="file2"
+										onChange={handleFileChange2}
+										display="none"
+									/>
 									<Button
 										width="100px"
 										h="30px"
 										fontSize="13px"
 										variant="solid"
+										as="label"
+										htmlFor="file2"
 									>
 										Select File
 									</Button>
 									<Text fontSize={10} mt={1} color="gray.400">
-										Maximum upload file size: 10 MB
+										{!fileName2
+											? "Maximum upload file size: 1 GB"
+											: fileName2.substring(0, 30) +
+											  (fileName2.length > 30
+													? "..."
+													: "")}
 									</Text>
+									{fileName2 && (
+										<Button
+											width="70px"
+											h="20px"
+											fontSize="11px"
+											background="red.500"
+											_hover={{ background: "red.600" }}
+											onClick={() =>
+												removeImg(2, () => {
+													setFileName2("");
+													setSelectedFile2("");
+												})
+											}
+										>
+											Remove
+										</Button>
+									)}
 								</>
-							)}
+							}
 						</Flex>
 					</Flex>
 				</Flex>
@@ -234,7 +294,7 @@ const LevelWiseAccordion = (prop) => {
 					/>
 					<Flex w="170px" alignItems="start" flexDirection="column">
 						<Text fontSize={12} lineHeight="26px" color="blue.200">
-							Message Image
+							Attachment
 						</Text>
 						<Flex
 							border="1px dashed"
@@ -249,48 +309,57 @@ const LevelWiseAccordion = (prop) => {
 							alignItems="center"
 							textAlign="center"
 						>
-							{1 == 1 ? (
-								<>
-									<Image
-										boxSize="170px"
-										objectFit="cover"
-										src="https://bit.ly/dan-abramov"
-										alt="Dan Abramov"
-									/>
-
-									<Button
-										position="absolute"
-										zIndex="modal"
-										bottom={0}
-										width="100%"
-										variant="solid"
-                                        onClick={()=>imgRef1.current.click()}
-									>
-										Change
-									</Button>
-								</>
-							) : (
+							{
 								<>
 									<Text fontSize={14}>
 										Drop file to upload
 									</Text>
 									<Text fontSize={10}>or</Text>
+									<Input
+										type="file"
+										id="file3"
+										name="file3"
+										onChange={handleFileChange3}
+										display="none"
+									/>
 									<Button
 										width="100px"
 										h="30px"
 										fontSize="13px"
 										variant="solid"
-                                        onClick={()=>imgRef1.current.click()}
+										as="label"
+										htmlFor="file3"
 									>
 										Select File
 									</Button>
-                                    
+
 									<Text fontSize={10} mt={1} color="gray.400">
-										Maximum upload file size: 10 MB
+										{!fileName3
+											? "Maximum upload file size: 1 GB"
+											: fileName3.substring(0, 30) +
+											  (fileName3.length > 30
+													? "..."
+													: "")}
 									</Text>
+									{fileName3 && (
+										<Button
+											width="70px"
+											h="20px"
+											fontSize="11px"
+											background="red.500"
+											_hover={{ background: "red.600" }}
+											onClick={() =>
+												removeImg(3, () => {
+													setFileName3("");
+													setSelectedFile3("");
+												})
+											}
+										>
+											Remove
+										</Button>
+									)}
 								</>
-							)}
-                            <input ref={imgRef1} style={{position:"absolute",opacity:0,pointerEvents:"none"}} type="file" accept="image/*" onChange={()=>{}} />
+							}
 						</Flex>
 					</Flex>
 				</Flex>

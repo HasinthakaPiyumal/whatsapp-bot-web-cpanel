@@ -20,17 +20,18 @@ import LevelWiseKeywordsLevel5 from "../pages/Keywords/LevelWiseKeywords/5";
 import LevelWiseKeywordsLevel6 from "../pages/Keywords/LevelWiseKeywords/6";
 import SpecialKeywordsList from "../pages/Keywords/SpecialKeywords/SpecialKeywordsList";
 import SpecialKeywordsEdit from "../pages/Keywords/SpecialKeywords/SpecialKeywordsEdit";
-import SpecialKeywordsLayout from "../layouts/SpecialKeywordsLayout"
+import SpecialKeywordsLayout from "../layouts/SpecialKeywordsLayout";
+import Edit from "../pages/Courses/Edit";
+import List from "../pages/Courses/List";
+import Settings from "../pages/Settings";
+import BlackList from "../pages/Users/BlackList";
+import WhiteList from "../pages/Users/WhiteList";
+import UserSubmission from "../pages/UserSubmission";
+import Read from "../pages/UserSubmission/Read";
 export const sidebarItems = [
 	{
-		title: "dashboard",
+		title: "Dashboard",
 		path: "dashboard",
-		icon: RxDashboard,
-		page: Dashboard,
-	},
-	{
-		title: "sessions",
-		path: "session",
 		icon: HiOutlineQrCode,
 		page: Session,
 	},
@@ -102,20 +103,68 @@ export const sidebarItems = [
 		title: "courses",
 		path: "courses",
 		icon: MdSchool,
-		page: Courses,
+		page: LevelWiseKeywords,
+		children: [
+			{
+				title: "add course",
+				path: "add",
+				page: Courses,
+			},
+			{
+				title: "course list",
+				path: "list",
+				page: List,
+			},
+		],
 	},
-	// {
-	// 	title: "manage users",
-	// 	path: "users",
-	// 	icon: FaUser,
-	// 	page: Users,
-	// },
-	// {
-	// 	title: "analytics",
-	// 	path: "analytics",
-	// 	icon: IoMdAnalytics,
-	// 	page: Dashboard,
-	// },
+	{
+		title: "course edit",
+		path: "courses/edit",
+		page: Edit,
+		hidden: true,
+		back: true,
+	},
+	{
+		title: "manage users",
+		path: "users",
+		icon: FaUser,
+		page: LevelWiseKeywords,
+		children: [
+			{
+				title: "user list",
+				path: "list",
+				page: Users,
+			},
+			{
+				title: "black list",
+				path: "black-list",
+				page: BlackList,
+			},
+			{
+				title: "white list",
+				path: "white-list",
+				page: WhiteList,
+			},
+		],
+	},
+	{
+		title: "Form submissions",
+		path: "form-submissions",
+		icon: IoMdAnalytics,
+		page: LevelWiseKeywords,
+		children: [
+			{
+				title: "unread forms",
+				path: "unread",
+				page: UserSubmission,
+			},
+			{
+				title: "read forms",
+				path: "read",
+				page: Read,
+			},
+		],
+	},
 	// {
 	// 	title: "manage staff",
 	// 	path: "staff",
@@ -126,7 +175,7 @@ export const sidebarItems = [
 		title: "settings",
 		path: "setting",
 		icon: RiSettings4Fill,
-		page: Dashboard,
+		page: Settings,
 	},
 	// {
 	// 	title: "profile",

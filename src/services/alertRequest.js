@@ -28,11 +28,15 @@ const post = async (
 	isJSON = true
 ) => {
 	const id = toast.loading("Please wait...", { type: "info" });
-	if (isJSON) headers["content-type"] = "application/json";
+	if (isJSON) {
+		headers["content-type"] = "application/json";
+	} else {
+		headers["content-type"] = "multipart/form-data";
+	}
 	const result = await requests.post(path, headers, body);
 	toast.dismiss(id);
 	if (result.status) {
-        alert.success(result.message);
+		alert.success(result.message);
 		callback(result.data);
 	} else {
 		alert.error(result.message);

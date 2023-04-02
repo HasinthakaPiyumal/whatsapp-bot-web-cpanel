@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
 	Button,
 	Flex,
@@ -7,13 +7,28 @@ import {
 	InputGroup,
 	InputRightElement,
 	Text,
-    Textarea,
+	Textarea,
 } from "@chakra-ui/react";
 
 const FormTextArea = (prop) => {
 	function titled(str) {
 		if (str === undefined) return;
 		return str.charAt(0).toUpperCase() + str.slice(1);
+	}
+	const textAreaRef = useRef(null);
+	useEffect(() => {
+		if (textAreaRef.current) {
+			textAreaRef.current.style.height = "auto";
+			textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
+		}
+	}, [prop.value]);
+
+	function handleChange(e) {
+		if (textAreaRef.current) {
+			textAreaRef.current.style.height = "auto";
+			textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
+		}
+		if (prop.onChange) prop.onChange(e);
 	}
 	return (
 		<FormLabel
@@ -49,12 +64,11 @@ const FormTextArea = (prop) => {
 					border="none"
 					_placeholder={{ color: "#6c7293" }}
 					mt={titled(prop.label) && "5px"}
-                    sx={prop.areaSx}
+					sx={prop.areaSx}
+					ref={textAreaRef}
 				></Textarea>
 				{prop.rightElement && (
-					<InputRightElement>
-						{prop.rightElement}
-					</InputRightElement>
+					<InputRightElement>{prop.rightElement}</InputRightElement>
 				)}
 			</InputGroup>
 		</FormLabel>

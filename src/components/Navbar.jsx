@@ -1,7 +1,10 @@
-import { Avatar, Flex, HStack, Input, Text } from "@chakra-ui/react";
+import { Avatar, Button, Flex, HStack, Input, Text } from "@chakra-ui/react";
 import React from "react";
-import { AiFillBell, AiFillMail } from "react-icons/ai";
+import { FiLogOut } from "react-icons/fi";
 import { RxDashboard } from "react-icons/rx";
+import { useNavigate } from "react-router-dom";
+import FormButton from "./FormButton";
+import AlertBox from "./AlertBox";
 const Navbar = () => {
 	const navBarContainerStyles = {
 		bg: "brand.800",
@@ -11,41 +14,55 @@ const Navbar = () => {
 		px: 8,
 		color: "brand.100",
 	};
+	const navigation = useNavigate();
 	return (
 		<Flex
 			sx={navBarContainerStyles}
 			justifyContent="space-between"
 			gap="100px"
 		>
-			<Input
-				maxW="400px"
-				_placeholder={{ color: "#6c7293" }}
-				placeholder="Search User"
-				fontSize="14px"
-				focusBorderColor="none"
-				h="38px"
-				border="1px solid #2A2D3A"
-				outline="none"
-				_focus={{
-					_hover: { border: "1px solid" },
-					border: "1px solid",
-				}}
-				_hover={{ border: "1px solid #2A2D3A" }}
-			/>
+			<FormButton onClick={() => navigation("/special-keywords/add")}>
+				Add New Keyword
+			</FormButton>
 
-			<Flex alignItems="center" gap="32px">
-				<RxDashboard fontSize={18} color="white" />
-				<AiFillMail fontSize={18} color="white" />
-				<AiFillBell fontSize={18} color="white" />
+			<Flex alignItems="center" gap="20px">
+				<RxDashboard
+					fontSize={18}
+					color="white"
+					onClick={() => {
+						navigation("/dashboard");
+					}}
+					cursor="pointer"
+				/>
+                <AlertBox
+						button={{
+							sx: {
+								flex: 1,
+								fontSize: "sm",
+                                size:"sm",
+                                h:"32px",
+                                color: "white",
+								bg: "red.700",
+								_hover: {
+									bg: "red.800",
+								},
+							},
+							body: "Logout",
+						}}
+						title="Logout session"
+						description="Do you want to log out of this session? This action is irreversible."
+                        onSuccess={()=>{console.log("logged out")}}
+					/>
 				<HStack>
 					<Avatar
 						h="35px"
 						w="35px"
-						name="Kent Dodds"
-						src="https://bit.ly/kent-c-dodds"
+						name="Super Admin"
+						background="brand.900"
+						src="https://bit.ly/kent-c-doddsa"
 					/>
 					<Text color="white" fontSize="14px" ml="16px">
-						Kent Dodds
+						Super Admin
 					</Text>
 				</HStack>
 			</Flex>

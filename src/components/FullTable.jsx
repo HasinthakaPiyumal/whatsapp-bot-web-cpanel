@@ -61,6 +61,17 @@ const FullTable = (prop) => {
 									{id + 1}
 								</Td>
 								{prop.columns.map((column) => {
+									if (column.cell) {
+										return (
+											<Td
+												py="10px"
+												color="#6c7293"
+												borderBottomColor="#2A2D3A"
+											>
+												{column.cell(row)}
+											</Td>
+										);
+									}
 									if (
 										column.key === "status" &&
 										column.head.toLowerCase() === "status"
@@ -134,8 +145,8 @@ const FullTable = (prop) => {
 												<ActionDotsVert
 													id={row.id}
 													tableId={prop.tableId}
-                                                    loadTable={prop.loadTable}
-                                                    editPath={prop.editPath}
+													loadTable={prop.loadTable}
+													editPath={prop.editPath}
 												/>
 											</Td>
 										);

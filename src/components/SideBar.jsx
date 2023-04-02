@@ -98,8 +98,9 @@ const SideBar = (prop) => {
 						<Avatar
 							h="35px"
 							w="35px"
-							name="Kent Dodds"
-							src="https://bit.ly/kent-c-dodds"
+							name="Super Admin"
+							src=""
+                            background="brand.900"
 						>
 							<AvatarBadge
 								border="2px solid"
@@ -115,7 +116,7 @@ const SideBar = (prop) => {
 							marginLeft={4}
 						>
 							<Text size="xs" lineHeight="19px" color="brand.50">
-								Kent Dodds
+								Logged as
 							</Text>
 							<Text as="h6" fontSize="12px" color="brand.100">
 								Super Admin

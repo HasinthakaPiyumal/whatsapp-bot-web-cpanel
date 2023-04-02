@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import Container from "../../../components/Container";
 import {
 	Box,
+	Button,
 	Flex,
 	HStack,
 	Heading,
+	Input,
 	Tab,
 	TabList,
 	TabPanel,
@@ -17,35 +19,43 @@ import FormInput from "../../../components/FormInput";
 import FormButton from "../../../components/FormButton";
 import alertRequest from "../../../services/alertRequest";
 import FormTextArea from "../../../components/FormTextArea";
+import { useLocation } from "react-router-dom";
 import requests from "../../../util/requests";
 
-import { useLocation } from "react-router-dom";
-
-const SpecialKeywordsEdit = (props) => {
+const SpecialKeywords = () => {
 	const [message1, setMessage1] = useState();
 	const [messageId1, setMessageId1] = useState();
-	const [messageOptions1, setMessageOptions1] = useState([]);
-	const [messageOption1, setMessageOption1] = useState();
+	// const [messageOptions1, setMessageOptions1] = useState([]);
+	// const [messageOption1, setMessageOption1] = useState();
 	const [message2, setMessage2] = useState();
 	const [messageId2, setMessageId2] = useState();
-	const [messageOptions2, setMessageOptions2] = useState([]);
-	const [messageOption2, setMessageOption2] = useState();
+	// const [messageOptions2, setMessageOptions2] = useState([]);
+	// const [messageOption2, setMessageOption2] = useState();
 	const [message3, setMessage3] = useState();
 	const [messageId3, setMessageId3] = useState();
-	const [messageOptions3, setMessageOptions3] = useState([]);
-	const [messageOption3, setMessageOption3] = useState();
+	// const [messageOptions3, setMessageOptions3] = useState([]);
+	// const [messageOption3, setMessageOption3] = useState();
 
 	const [keyword, setKeyword] = useState();
 	const [keywords, setKeywords] = useState([]);
+
+	const [selectedFile1, setSelectedFile1] = useState(null);
+	const [selectedFile2, setSelectedFile2] = useState(null);
+	const [selectedFile3, setSelectedFile3] = useState(null);
+	const [fileName1, setFileName1] = useState();
+	const [fileName2, setFileName2] = useState();
+	const [fileName3, setFileName3] = useState();
 
 	function addMessage(language) {
 		let text;
 		let callBack;
 		let messageId;
+		const formData = new FormData();
 		switch (language) {
 			case 1:
 				text = message1;
 				messageId = messageId1;
+				formData.append("file", selectedFile1);
 				callBack = (data) => {
 					setMessageId1(data.id);
 				};
@@ -53,153 +63,160 @@ const SpecialKeywordsEdit = (props) => {
 			case 2:
 				text = message2;
 				messageId = messageId2;
+				formData.append("file", selectedFile2);
 				callBack = (data) => setMessageId2(data.id);
 				break;
 			case 3:
 				text = message3;
 				messageId = messageId3;
+				formData.append("file", selectedFile3);
 				callBack = (data) => setMessageId3(data.id);
 				break;
 
 			default:
 				break;
 		}
-		const data = { text: text, language: language, id: messageId };
+		formData.append("text", text);
+		formData.append("language", language);
+		formData.append("id", messageId);
+		// const data = { text: text, language: language, id: messageId };
 		alertRequest.post(
 			"/special-messages/" +
 				(messageId ? "update-message" : "add-message"),
-			data,
-			messageId ? () => {} : callBack
+			formData,
+			messageId ? () => {} : callBack,
+			{},
+			false
 		);
 	}
-	function handleOptionAdd(data, language) {
-		const newOptions1 = [...messageOptions1, data];
-		const newOptions2 = [...messageOptions2, data];
-		const newOptions3 = [...messageOptions3, data];
-		switch (language) {
-			case 1:
-				setMessageOptions1(newOptions1);
-				setMessageOption1("");
-				break;
-			case 2:
-				setMessageOptions2(newOptions2);
-				setMessageOption2("");
-				break;
-			case 3:
-				setMessageOptions3(newOptions3);
-				setMessageOption3("");
-				break;
-			default:
-				break;
-		}
-	}
-	function addMessageOption(language) {
-		let text;
-		let id;
-		switch (language) {
-			case 1:
-				text = messageOption1;
-				id = messageId1;
-				break;
-			case 2:
-				text = messageOption2;
-				id = messageId2;
-				break;
-			case 3:
-				text = messageOption3;
-				id = messageId3;
-				break;
+	// function handleOptionAdd(data, language) {
+	// 	const newOptions1 = [...messageOptions1, data];
+	// 	const newOptions2 = [...messageOptions2, data];
+	// 	const newOptions3 = [...messageOptions3, data];
+	// 	switch (language) {
+	// 		case 1:
+	// 			setMessageOptions1(newOptions1);
+	// 			setMessageOption1("");
+	// 			break;
+	// 		case 2:
+	// 			setMessageOptions2(newOptions2);
+	// 			setMessageOption2("");
+	// 			break;
+	// 		case 3:
+	// 			setMessageOptions3(newOptions3);
+	// 			setMessageOption3("");
+	// 			break;
+	// 		default:
+	// 			break;
+	// 	}
+	// }
+	// function addMessageOption(language) {
+	// 	let text;
+	// 	let id;
+	// 	switch (language) {
+	// 		case 1:
+	// 			text = messageOption1;
+	// 			id = messageId1;
+	// 			break;
+	// 		case 2:
+	// 			text = messageOption2;
+	// 			id = messageId2;
+	// 			break;
+	// 		case 3:
+	// 			text = messageOption3;
+	// 			id = messageId3;
+	// 			break;
 
-			default:
-				break;
-		}
-		const data = { text: text, language: language, messageId: id };
-		alertRequest.post(
-			"/special-messages/add-message-option",
-			data,
-			(data) => {
-				handleOptionAdd(data, language);
-			}
-		);
-	}
-	function onFinishRemoveOption(id, language) {
-		let newOptions1 = [...messageOptions1];
-		let newOptions2 = [...messageOptions2];
-		let newOptions3 = [...messageOptions3];
-		newOptions1 = newOptions1.filter((item) => item.id !== id);
-		newOptions2 = newOptions2.filter((item) => item.id !== id);
-		newOptions3 = newOptions3.filter((item) => item.id !== id);
-		switch (language) {
-			case 1:
-				setMessageOptions1(newOptions1);
-				break;
-			case 2:
-				setMessageOptions2(newOptions2);
-				break;
-			case 3:
-				setMessageOptions3(newOptions3);
-				break;
-			default:
-				break;
-		}
-	}
-	function removeMessageOption(id, language) {
-		alertRequest.post(
-			"/special-messages/remove-message-option",
-			{
-				id: id,
-			},
-			() => onFinishRemoveOption(id, language)
-		);
-	}
-	function onChangeOption(text, id, language) {
-		let newOptions1 = [];
-		let newOptions2 = [];
-		let newOptions3 = [];
-		messageOptions1.map((option) => {
-			if (option.id === id) {
-				option.display_text = text;
-				newOptions1.push(option);
-			} else {
-				newOptions1.push(option);
-			}
-		});
-		messageOptions2.map((option) => {
-			if (option.id === id) {
-				option.display_text = text;
-				newOptions2.push(option);
-			} else {
-				newOptions2.push(option);
-			}
-		});
-		messageOptions3.map((option) => {
-			if (option.id === id) {
-				option.display_text = text;
-				newOptions3.push(option);
-			} else {
-				newOptions3.push(option);
-			}
-		});
-		switch (language) {
-			case 1:
-				setMessageOptions1(newOptions1);
-				break;
-			case 2:
-				setMessageOptions2(newOptions2);
-				break;
-			case 3:
-				setMessageOptions3(newOptions3);
-				break;
-			default:
-				break;
-		}
-	}
-	function updateMessageOption(id, text) {
-		alertRequest.post("/special-messages/update-message-option", {
-			id: id,
-			text: text,
-		});
-	}
+	// 		default:
+	// 			break;
+	// 	}
+	// 	const data = { text: text, language: language, messageId: id };
+	// 	alertRequest.post(
+	// 		"/special-messages/add-message-option",
+	// 		data,
+	// 		(data) => {
+	// 			handleOptionAdd(data, language);
+	// 		}
+	// 	);
+	// }
+	// function onFinishRemoveOption(id, language) {
+	// 	let newOptions1 = [...messageOptions1];
+	// 	let newOptions2 = [...messageOptions2];
+	// 	let newOptions3 = [...messageOptions3];
+	// 	newOptions1 = newOptions1.filter((item) => item.id !== id);
+	// 	newOptions2 = newOptions2.filter((item) => item.id !== id);
+	// 	newOptions3 = newOptions3.filter((item) => item.id !== id);
+	// 	switch (language) {
+	// 		case 1:
+	// 			setMessageOptions1(newOptions1);
+	// 			break;
+	// 		case 2:
+	// 			setMessageOptions2(newOptions2);
+	// 			break;
+	// 		case 3:
+	// 			setMessageOptions3(newOptions3);
+	// 			break;
+	// 		default:
+	// 			break;
+	// 	}
+	// }
+	// function removeMessageOption(id, language) {
+	// 	alertRequest.post(
+	// 		"/special-messages/remove-message-option",
+	// 		{
+	// 			id: id,
+	// 		},
+	// 		() => onFinishRemoveOption(id, language)
+	// 	);
+	// }
+	// function onChangeOption(text, id, language) {
+	// 	let newOptions1 = [];
+	// 	let newOptions2 = [];
+	// 	let newOptions3 = [];
+	// 	messageOptions1.map((option) => {
+	// 		if (option.id === id) {
+	// 			option.display_text = text;
+	// 			newOptions1.push(option);
+	// 		} else {
+	// 			newOptions1.push(option);
+	// 		}
+	// 	});
+	// 	messageOptions2.map((option) => {
+	// 		if (option.id === id) {
+	// 			option.display_text = text;
+	// 			newOptions2.push(option);
+	// 		} else {
+	// 			newOptions2.push(option);
+	// 		}
+	// 	});
+	// 	messageOptions3.map((option) => {
+	// 		if (option.id === id) {
+	// 			option.display_text = text;
+	// 			newOptions3.push(option);
+	// 		} else {
+	// 			newOptions3.push(option);
+	// 		}
+	// 	});
+	// 	switch (language) {
+	// 		case 1:
+	// 			setMessageOptions1(newOptions1);
+	// 			break;
+	// 		case 2:
+	// 			setMessageOptions2(newOptions2);
+	// 			break;
+	// 		case 3:
+	// 			setMessageOptions3(newOptions3);
+	// 			break;
+	// 		default:
+	// 			break;
+	// 	}
+	// }
+	// function updateMessageOption(id, text) {
+	// 	alertRequest.post("/special-messages/update-message-option", {
+	// 		id: id,
+	// 		text: text,
+	// 	});
+	// }
 
 	function onFinishAddKeyword(data) {
 		const tempKeywords = [...keywords, data];
@@ -273,48 +290,76 @@ const SpecialKeywordsEdit = (props) => {
 		);
 	}
 
+	const handleFileChange1 = (event) => {
+		setSelectedFile1(event.target.files[0]);
+		setFileName1(event.target.files[0].name);
+	};
+	const handleFileChange2 = (event) => {
+		setSelectedFile2(event.target.files[0]);
+		setFileName2(event.target.files[0].name);
+	};
+	const handleFileChange3 = (event) => {
+		setSelectedFile3(event.target.files[0]);
+		setFileName3(event.target.files[0].name);
+	};
 	async function getData(id) {
-		console.log(id);
 		let data = await requests.post(
 			"/special-messages/view",
 			{},
 			{ id: id }
 		);
-		console.log(data);
 		data = data.data;
 		setMessage1(data.lang1.text);
 		setMessageId1(data.lang1.id);
-		setMessageOptions1(data.lang1.items);
+		setFileName1(
+			data.lang1.original_file_name === "null"
+				? ""
+				: data.lang1.original_file_name
+		);
 
 		setMessage2(data.lang2.text);
 		setMessageId2(data.lang2.id);
-		setMessageOptions2(data.lang2.items);
+		setFileName2(
+			data.lang2.original_file_name === "null"
+				? ""
+				: data.lang2.original_file_name
+		);
 
 		setMessage3(data.lang3.text);
 		setMessageId3(data.lang3.id);
-		setMessageOptions3(data.lang3.items);
+		setFileName2(
+			data.lang3.original_file_name === "null"
+				? ""
+				: data.lang3.original_file_name
+		);
 
 		setKeyword("");
 		setKeywords([
 			{ id: data.id, keyword: data.keyword, status: data.status },
 		]);
 	}
-
 	const location = useLocation();
+
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
 		const id = params.get("id");
 		console.log(id);
 		getData(parseInt(id));
 	}, []);
-
+	function removeImg(id, callback) {
+		alertRequest.post(
+			"/special-messages/remove-image",
+			{ id: id },
+			callback
+		);
+	}
 	return (
 		<Container>
 			{/* ================================ */}
 			{/*      message section start       */}
 			{/* ================================ */}
 			<Heading size={10} mb={5}>
-				Update Special Response Message
+				Add Special Response Message
 			</Heading>
 			<Tabs isFitted variant="enclosed">
 				<TabList mb="1em">
@@ -341,15 +386,62 @@ const SpecialKeywordsEdit = (props) => {
 									}}
 									sx={{ h: "auto" }}
 								/>
+								<Flex
+									background="#2A3038"
+									padding="5px"
+									gap="10px"
+									alignItems="center"
+								>
+									<Input
+										type="file"
+										id="file1"
+										name="file1"
+										onChange={handleFileChange1}
+										display="none"
+									/>
+									<FormButton
+										sx={{ width: "fit-content" }}
+										as={"label"}
+										background="whiteAlpha.400"
+										color="whiteAlpha.900"
+										htmlFor="file1"
+									>
+										Attach File
+									</FormButton>
+									<Text
+										isTruncated
+										color="whiteAlpha.700"
+										fontSize={13}
+									>
+										{fileName1}
+									</Text>
+									{fileName1 && (
+										<Button
+											width="70px"
+											h="20px"
+											fontSize="11px"
+											background="red.500"
+											_hover={{ background: "red.600" }}
+											onClick={() =>
+												removeImg(messageId1, () => {
+													setFileName1("");
+													setSelectedFile1("");
+												})
+											}
+										>
+											Remove
+										</Button>
+									)}
+								</Flex>
 								<FormButton
-									sx={{ mt: 2, width: "fit-content" }}
+									sx={{ mt: 4, width: "fit-content" }}
 									onClick={() => addMessage(1)}
 								>
 									{!messageId1
 										? "Add message"
 										: "Update Message"}
 								</FormButton>
-								{messageId1 && (
+								{/* {messageId1 && (
 									<>
 										<HStack>
 											<Text
@@ -427,7 +519,7 @@ const SpecialKeywordsEdit = (props) => {
 											Save
 										</FormButton>
 									</HStack>
-								))}
+								))} */}
 							</VStack>
 							<VStack w="48%">
 								<Text fontSize={14} fontWeight="bold">
@@ -445,7 +537,7 @@ const SpecialKeywordsEdit = (props) => {
 									<Text fontSize={14}>
 										<pre style={{ whiteSpace: "pre-wrap" }}>
 											{message1}
-											{"\n"}
+											{/* {"\n"}
 											{messageOptions1.map(
 												(option, index) =>
 													"[" +
@@ -453,7 +545,7 @@ const SpecialKeywordsEdit = (props) => {
 													"] " +
 													option.display_text +
 													"\n"
-											)}
+											)} */}
 										</pre>
 									</Text>
 								</Box>
@@ -478,6 +570,53 @@ const SpecialKeywordsEdit = (props) => {
 									}}
 									sx={{ h: "auto" }}
 								/>
+								<Flex
+									background="#2A3038"
+									padding="5px"
+									gap="10px"
+									alignItems="center"
+								>
+									<Input
+										type="file"
+										id="file2"
+										name="file2"
+										onChange={handleFileChange2}
+										display="none"
+									/>
+									<FormButton
+										sx={{ width: "fit-content" }}
+										as={"label"}
+										background="whiteAlpha.400"
+										color="whiteAlpha.900"
+										htmlFor="file2"
+									>
+										Attach File
+									</FormButton>
+									<Text
+										isTruncated
+										color="whiteAlpha.700"
+										fontSize={13}
+									>
+										{fileName2}
+									</Text>
+									{fileName2 && (
+										<Button
+											width="70px"
+											h="20px"
+											fontSize="11px"
+											background="red.500"
+											_hover={{ background: "red.600" }}
+											onClick={() =>
+												removeImg(messageId2, () => {
+													setFileName2("");
+													setSelectedFile2("");
+												})
+											}
+										>
+											Remove
+										</Button>
+									)}
+								</Flex>
 								<FormButton
 									sx={{ mt: 2, width: "fit-content" }}
 									onClick={() => addMessage(2)}
@@ -486,7 +625,7 @@ const SpecialKeywordsEdit = (props) => {
 										? "Add message"
 										: "Update Message"}
 								</FormButton>
-								{messageId2 && (
+								{/* {messageId2 && (
 									<>
 										<HStack>
 											<Text
@@ -564,7 +703,7 @@ const SpecialKeywordsEdit = (props) => {
 											Save
 										</FormButton>
 									</HStack>
-								))}
+								))} */}
 							</VStack>
 							<VStack w="48%">
 								<Text fontSize={14} fontWeight="bold">
@@ -582,7 +721,7 @@ const SpecialKeywordsEdit = (props) => {
 									<Text fontSize={14}>
 										<pre style={{ whiteSpace: "pre-wrap" }}>
 											{message2}
-											{"\n"}
+											{/* {"\n"}
 											{messageOptions2.map(
 												(option, index) =>
 													"[" +
@@ -590,7 +729,7 @@ const SpecialKeywordsEdit = (props) => {
 													"] " +
 													option.display_text +
 													"\n"
-											)}
+											)} */}
 										</pre>
 									</Text>
 								</Box>
@@ -615,6 +754,53 @@ const SpecialKeywordsEdit = (props) => {
 									}}
 									sx={{ h: "auto" }}
 								/>
+								<Flex
+									background="#2A3038"
+									padding="5px"
+									gap="10px"
+									alignItems="center"
+								>
+									<Input
+										type="file"
+										id="file3"
+										name="file3"
+										onChange={handleFileChange3}
+										display="none"
+									/>
+									<FormButton
+										sx={{ width: "fit-content" }}
+										as={"label"}
+										background="whiteAlpha.400"
+										color="whiteAlpha.900"
+										htmlFor="file3"
+									>
+										Attach File
+									</FormButton>
+									<Text
+										isTruncated
+										color="whiteAlpha.700"
+										fontSize={13}
+									>
+										{fileName3}
+									</Text>
+									{fileName3 && (
+										<Button
+											width="70px"
+											h="20px"
+											fontSize="11px"
+											background="red.500"
+											_hover={{ background: "red.600" }}
+											onClick={() =>
+												removeImg(messageId3, () => {
+													setFileName3("");
+													setSelectedFile3("");
+												})
+											}
+										>
+											Remove
+										</Button>
+									)}
+								</Flex>
 								<FormButton
 									sx={{ mt: 2, width: "fit-content" }}
 									onClick={() => addMessage(3)}
@@ -623,7 +809,7 @@ const SpecialKeywordsEdit = (props) => {
 										? "Add message"
 										: "Update Message"}
 								</FormButton>
-								{messageId3 && (
+								{/* {messageId3 && (
 									<>
 										<HStack>
 											<Text
@@ -657,8 +843,8 @@ const SpecialKeywordsEdit = (props) => {
 											</FormButton>
 										</HStack>
 									</>
-								)}
-								{messageOptions3.map((option, index) => (
+								)} */}
+								{/* {messageOptions3.map((option, index) => (
 									<HStack
 										alignItems="end"
 										cursor="not-allowed"
@@ -701,7 +887,7 @@ const SpecialKeywordsEdit = (props) => {
 											Save
 										</FormButton>
 									</HStack>
-								))}
+								))} */}
 							</VStack>
 							<VStack w="48%">
 								<Text fontSize={14} fontWeight="bold">
@@ -719,7 +905,7 @@ const SpecialKeywordsEdit = (props) => {
 									<Text fontSize={14}>
 										<pre style={{ whiteSpace: "pre-wrap" }}>
 											{message3}
-											{"\n"}
+											{/* {"\n"}
 											{messageOptions3.map(
 												(option, index) =>
 													"[" +
@@ -727,7 +913,7 @@ const SpecialKeywordsEdit = (props) => {
 													"] " +
 													option.display_text +
 													"\n"
-											)}
+											)} */}
 										</pre>
 									</Text>
 								</Box>
@@ -865,4 +1051,4 @@ const SpecialKeywordsEdit = (props) => {
 	);
 };
 
-export default SpecialKeywordsEdit;
+export default SpecialKeywords;

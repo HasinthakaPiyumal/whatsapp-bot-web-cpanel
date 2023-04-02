@@ -13,9 +13,13 @@ import {
 	Grid,
 	GridItem,
 	Skeleton,
+	Flex,
 } from "@chakra-ui/react";
 import AlertBox from "../../components/AlertBox";
 import socketIO from "socket.io-client";
+
+import { FiClock, FiUsers, FiShoppingCart, FiMail } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 function getTimeDifference(start, end) {
 	if (!(start && end)) {
@@ -29,7 +33,7 @@ function getTimeDifference(start, end) {
 	const minutes = Math.floor((diffInSeconds % 3600) / 60);
 	const seconds = diffInSeconds % 60;
 
-	return `${days}:${hours}:${minutes}:${seconds}`;
+	return `${days<10?"0":""}${days}:${hours<10?"0":""}${hours}:${minutes<10?"0":""}${minutes}:${seconds<10?"0":""}${seconds}`;
 }
 
 const Profile = (prop) => {
@@ -55,6 +59,7 @@ const Profile = (prop) => {
 			clearInterval(timerId);
 		};
 	}, []);
+    const navigation = useNavigate();
 	return (
 		<HStack
 			m={8}
@@ -157,35 +162,103 @@ const Profile = (prop) => {
 						_hover={{
 							bg: "blue.500",
 						}}
+                        onClick={()=>navigation("/form-submissions/unread")}
 					>
-						Messages
+						Submissions
 					</Button>
 				</Stack>
 			</Box>
 			<Container sx={{ w: "full" }}>
 				<Grid templateColumns="repeat(2, 1fr)" gap={6} h="100%">
-					<Skeleton borderRadius="4px" w="100%" isLoaded={getTimeDifference(startTime, now)}>
+					<Skeleton
+						borderRadius="4px"
+						w="100%"
+						isLoaded={getTimeDifference(startTime, now)}
+					>
 						<Box
-							bg="gray.700"
+							bgGradient="linear(to-r, #7928CA, #FF0080)"
 							color="white"
 							borderRadius="lg"
 							boxShadow="md"
-                            w="100%"
+							w="100%"
 							h="100%"
 							display="inline-flex"
 							alignItems="center"
 							justifyContent="center"
+							transition="background 0.5s ease"
+							animation="changeGradient 5s ease infinite alternate"
+							position="relative"
 						>
 							<Text fontSize="xl">
 								{getTimeDifference(startTime, now)
 									? getTimeDifference(startTime, now)
 									: "D:H:M:S"}
 							</Text>
+							<Flex position="absolute" bottom="20px" alignItems="center">
+								<Box as={FiClock} fontSize="2xl" mr={1} />
+								<Text fontSize="sm" ml={2}>
+									Running Time D:H:M:S
+								</Text>
+							</Flex>
 						</Box>
 					</Skeleton>
-					<GridItem w="100%" h="100%" bg="blue.500" />
-					<GridItem w="100%" h="100%" bg="blue.500" />
-					<GridItem w="100%" h="100%" bg="blue.500" />
+					<Box
+						bgGradient="linear(to-r, #ED213A, #93291E)"
+						color="white"
+						borderRadius="lg"
+						boxShadow="md"
+						w="100%"
+						h="100%"
+						display="inline-flex"
+						alignItems="center"
+						justifyContent="center"
+						transition="background 0.5s ease"
+						backgroundSize="300% 300%"
+					>
+						<Box as={FiUsers} fontSize="2xl" mr={2} />
+						<Text fontSize="xl">1000</Text>
+						<Text fontSize="sm" ml={2}>
+							Users
+						</Text>
+					</Box>
+					<Box
+						bgGradient="linear(to-r, #00F260, #0575E6)"
+						color="white"
+						borderRadius="lg"
+						boxShadow="md"
+						w="100%"
+						h="100%"
+						display="inline-flex"
+						alignItems="center"
+						justifyContent="center"
+						transition="background 0.5s ease"
+						backgroundSize="300% 300%"
+					>
+						<Box as={FiShoppingCart} fontSize="2xl" mr={2} />
+						<Text fontSize="xl">$10,000</Text>
+						<Text fontSize="sm" ml={2}>
+							Sales
+						</Text>
+					</Box>
+					<Box
+						bgGradient="linear(to-r, #FC354C, #0ABFBC)"
+						color="white"
+						borderRadius="lg"
+						boxShadow="md"
+						w="100%"
+						h="100%"
+						display="inline-flex"
+						alignItems="center"
+						justifyContent="center"
+						transition="background 0.5s ease"
+						backgroundSize="300% 300%"
+					>
+						<Box as={FiMail} fontSize="2xl" mr={2} />
+						<Text fontSize="xl">5000</Text>
+						<Text fontSize="sm" ml={2}>
+							Emails
+						</Text>
+					</Box>
 				</Grid>
 			</Container>
 		</HStack>
