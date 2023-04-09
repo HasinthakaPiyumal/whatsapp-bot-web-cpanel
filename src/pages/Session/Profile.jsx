@@ -19,7 +19,7 @@ import AlertBox from "../../components/AlertBox";
 import socketIO from "socket.io-client";
 
 import { FiClock, FiUsers, FiShoppingCart, FiMail } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function getTimeDifference(start, end) {
 	if (!(start && end)) {
@@ -33,16 +33,21 @@ function getTimeDifference(start, end) {
 	const minutes = Math.floor((diffInSeconds % 3600) / 60);
 	const seconds = diffInSeconds % 60;
 
-	return `${days<10?"0":""}${days}:${hours<10?"0":""}${hours}:${minutes<10?"0":""}${minutes}:${seconds<10?"0":""}${seconds}`;
+	return `${days < 10 ? "0" : ""}${days}:${hours < 10 ? "0" : ""}${hours}:${
+		minutes < 10 ? "0" : ""
+	}${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
 }
 
 const Profile = (prop) => {
 	const [startTime, setStartTime] = React.useState();
 	const [now, setNow] = React.useState();
+	const socket = socketIO.connect(process.env.REACT_APP_SOCKET_CONNECTION);
+    // const navigate = useLocation();
+	function logout() {
+		socket.emit("logout", "session");
+        window.location.reload();
+	}
 	React.useEffect(() => {
-		const socket = socketIO.connect(
-			process.env.REACT_APP_SOCKET_CONNECTION
-		);
 		socket.on("connect", () => {
 			socket.emit("time", "getStartTime");
 			socket.on("startTime", (st) => {
@@ -59,7 +64,7 @@ const Profile = (prop) => {
 			clearInterval(timerId);
 		};
 	}, []);
-    const navigation = useNavigate();
+	const navigation = useNavigate();
 	return (
 		<HStack
 			m={8}
@@ -149,6 +154,7 @@ const Profile = (prop) => {
 						}}
 						title="Logout session"
 						description="Do you want to log out of this session? This action is irreversible."
+						onSuccess={logout}
 					/>
 					<Button
 						flex={1}
@@ -162,7 +168,7 @@ const Profile = (prop) => {
 						_hover={{
 							bg: "blue.500",
 						}}
-                        onClick={()=>navigation("/form-submissions/unread")}
+						onClick={() => navigation("/form-submissions/unread")}
 					>
 						Submissions
 					</Button>
@@ -194,7 +200,11 @@ const Profile = (prop) => {
 									? getTimeDifference(startTime, now)
 									: "D:H:M:S"}
 							</Text>
-							<Flex position="absolute" bottom="20px" alignItems="center">
+							<Flex
+								position="absolute"
+								bottom="20px"
+								alignItems="center"
+							>
 								<Box as={FiClock} fontSize="2xl" mr={1} />
 								<Text fontSize="sm" ml={2}>
 									Running Time D:H:M:S
