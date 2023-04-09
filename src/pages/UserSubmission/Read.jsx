@@ -38,10 +38,47 @@ function extractNumber(text) {
 	}
 }
 
+const FormView = (prop) => {
+	const { isOpen, onOpen, onClose } = useDisclosure();
+	const { row, markAsRead } = prop;
+	return (
+		<>
+			<Button onClick={onOpen} size="sm">
+				View
+			</Button>
+			<Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
+				<ModalOverlay />
+				<ModalContent>
+					<ModalHeader>Submitted data</ModalHeader>
+					<ModalCloseButton />
+					<ModalBody>
+						<Text fontWeight="bold" mb="1rem">
+							Mobile number - {extractNumber(row.whatsapp_id)}
+						</Text>
+						<Divider my="10px" />
+						<pre>{row.message}</pre>
+						<Divider my="10px" />
+					</ModalBody>
+
+					<ModalFooter>
+						<Button
+							colorScheme="blue"
+							mr={3}
+							onClick={onClose}
+							size="sm"
+						>
+							Close
+						</Button>
+					</ModalFooter>
+				</ModalContent>
+			</Modal>
+		</>
+	);
+};
+
 const UserSubmission = () => {
 	const [table, setTable] = useState([]);
 	const [number, setNumber] = useState();
-	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	async function getTable() {
 		const data = await requests.post("/form/list", {}, { state: 0 });
@@ -147,47 +184,10 @@ const UserSubmission = () => {
 										borderRight="1px solid #2A2D3A"
 										width="10px"
 									>
-										<Button onClick={onOpen} size="sm">
-											View
-										</Button>
-										<Modal
-											blockScrollOnMount={false}
-											isOpen={isOpen}
-											onClose={onClose}
-										>
-											<ModalOverlay />
-											<ModalContent>
-												<ModalHeader>
-													Submitted data
-												</ModalHeader>
-												<ModalCloseButton />
-												<ModalBody>
-													<Text
-														fontWeight="bold"
-														mb="1rem"
-													>
-														Mobile number -{" "}
-														{extractNumber(
-															row.whatsapp_id
-														)}
-													</Text>
-													<Divider my="10px" />
-													<pre>{row.message}</pre>
-													<Divider my="10px" />
-												</ModalBody>
-
-												<ModalFooter>
-													<Button
-														colorScheme="blue"
-														mr={3}
-														onClick={onClose}
-														size="sm"
-													>
-														Close
-													</Button>
-												</ModalFooter>
-											</ModalContent>
-										</Modal>
+										<FormView
+											markAsRead={markAsRead}
+											row={row}
+										/>
 									</Td>
 									<Td
 										py="10px"

@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/SideBar";
 import Navbar from "../components/Navbar";
-import Dashboard from "../pages/Dashboard";
+import Dashboard from "../pages/Session/Index";
 import { useLocation } from "react-router-dom";
 import BreadCrumb from "../components/BreadCrumb";
 import { sidebarItems } from "../data/sidebar";
