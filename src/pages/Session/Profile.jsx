@@ -20,7 +20,7 @@ import socketIO from "socket.io-client";
 
 import { FiClock, FiUsers, FiShoppingCart, FiMail } from "react-icons/fi";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import { FaWpforms } from "react-icons/fa";
 function getTimeDifference(start, end) {
 	if (!(start && end)) {
 		return false;
@@ -41,14 +41,24 @@ function getTimeDifference(start, end) {
 const Profile = (prop) => {
 	const [startTime, setStartTime] = React.useState();
 	const [now, setNow] = React.useState();
+	const [info, setInfo] = React.useState({
+		usersCount: 0,
+		messagesCount: 0,
+		formsCount: 0,
+	});
+
 	const socket = socketIO.connect(process.env.REACT_APP_SOCKET_CONNECTION);
-    // const navigate = useLocation();
+	// const navigate = useLocation();
 	function logout() {
 		socket.emit("logout", "session");
-        window.location.reload();
+		window.location.reload();
 	}
 	React.useEffect(() => {
 		socket.on("connect", () => {
+			socket.emit("getInfo", "dashboard");
+			socket.on("setInfo", (st) => {
+				setInfo(st);
+			});
 			socket.emit("time", "getStartTime");
 			socket.on("startTime", (st) => {
 				setStartTime(st);
@@ -57,6 +67,7 @@ const Profile = (prop) => {
 		const timerId = setInterval(() => {
 			const now = Date.now();
 			setNow(now);
+			socket.emit("getInfo", "dashboard");
 		}, 1000);
 
 		return () => {
@@ -226,7 +237,7 @@ const Profile = (prop) => {
 						backgroundSize="300% 300%"
 					>
 						<Box as={FiUsers} fontSize="2xl" mr={2} />
-						<Text fontSize="xl">1000</Text>
+						<Text fontSize="xl">{info.usersCount}</Text>
 						<Text fontSize="sm" ml={2}>
 							Users
 						</Text>
@@ -244,10 +255,10 @@ const Profile = (prop) => {
 						transition="background 0.5s ease"
 						backgroundSize="300% 300%"
 					>
-						<Box as={FiShoppingCart} fontSize="2xl" mr={2} />
-						<Text fontSize="xl">$10,000</Text>
+						<Box as={FaWpforms} fontSize="2xl" mr={2} />
+						<Text fontSize="xl">{info.formsCount}</Text>
 						<Text fontSize="sm" ml={2}>
-							Sales
+							Forms
 						</Text>
 					</Box>
 					<Box
@@ -262,12 +273,20 @@ const Profile = (prop) => {
 						justifyContent="center"
 						transition="background 0.5s ease"
 						backgroundSize="300% 300%"
+						position="relative"
 					>
-						<Box as={FiMail} fontSize="2xl" mr={2} />
-						<Text fontSize="xl">5000</Text>
-						<Text fontSize="sm" ml={2}>
-							Emails
-						</Text>
+						<Text fontSize="xl">{info.messagesCount}</Text>
+
+						<Flex
+							position="absolute"
+							bottom="20px"
+							alignItems="center"
+						>
+							<Box as={FiMail} fontSize="2xl" mr={2} />
+							<Text fontSize="sm" ml={2}>
+								Handled Messages
+							</Text>
+						</Flex>
 					</Box>
 				</Grid>
 			</Container>

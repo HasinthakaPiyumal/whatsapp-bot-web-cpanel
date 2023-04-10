@@ -18,6 +18,7 @@ import { FaTimes } from "react-icons/fa";
 import alertRequest from "../../services/alertRequest";
 import FormInput from "../../components/FormInput";
 import FormButton from "../../components/FormButton";
+import AlertBox from "../../components/AlertBox";
 
 const BlackList = () => {
 	const [table, setTable] = useState([]);
@@ -34,8 +35,8 @@ const BlackList = () => {
 		setNumber("");
 		getTable();
 	}
-	function submit(type = 2,nb) {
-		const data = { number: nb?nb:number, type: type };
+	function submit(type = 2, nb) {
+		const data = { number: nb ? nb : number, type: type };
 		alertRequest.post("/number/add", data, clear);
 	}
 	return (
@@ -51,7 +52,10 @@ const BlackList = () => {
 					type="number"
 					required
 				/>
-				<FormButton onClick={()=>submit()} sx={{ h: "38px", w: "100px" }}>
+				<FormButton
+					onClick={() => submit()}
+					sx={{ h: "38px", w: "100px" }}
+				>
 					Add
 				</FormButton>
 			</Flex>
@@ -121,14 +125,24 @@ const BlackList = () => {
 										borderRight="1px solid #2A2D3A"
 										width="10px"
 									>
-                                        <Flex width="full" justifyContent="center">
-										<IconButton
-											size="sm"
-											aria-label="Remove"
-											icon={<FaTimes />}
-											onClick={()=>submit(-1,row.number)}
-										/>
-                                        </Flex>
+										<AlertBox
+											title="Remove number from blacklist"
+											description="Do you want to Remove this number from blacklist? This action is irreversible."
+											onSuccess={() => {
+												submit(-1, row.number);
+											}}
+										>
+											<Flex
+												width="full"
+												justifyContent="center"
+											>
+												<IconButton
+													size="sm"
+													aria-label="Remove"
+													icon={<FaTimes />}
+												/>
+											</Flex>
+										</AlertBox>
 									</Td>
 								</Tr>
 							))}

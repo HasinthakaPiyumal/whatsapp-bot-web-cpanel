@@ -5,6 +5,12 @@ import { RxDashboard } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 import FormButton from "./FormButton";
 import AlertBox from "./AlertBox";
+import Cookies from "js-cookie";
+
+function logout() {
+	Cookies.remove("access_token");
+	window.location.reload();
+}
 const Navbar = () => {
 	const navBarContainerStyles = {
 		bg: "brand.800",
@@ -34,25 +40,25 @@ const Navbar = () => {
 					}}
 					cursor="pointer"
 				/>
-                <AlertBox
-						button={{
-							sx: {
-								flex: 1,
-								fontSize: "sm",
-                                size:"sm",
-                                h:"32px",
-                                color: "white",
-								bg: "red.700",
-								_hover: {
-									bg: "red.800",
-								},
+				<AlertBox
+					button={{
+						sx: {
+							flex: 1,
+							fontSize: "sm",
+							size: "sm",
+							h: "32px",
+							color: "white",
+							bg: "red.700",
+							_hover: {
+								bg: "red.800",
 							},
-							body: "Logout",
-						}}
-						title="Logout session"
-						description="Do you want to log out of this session? This action is irreversible."
-                        onSuccess={()=>{console.log("logged out")}}
-					/>
+						},
+						body: "Logout",
+					}}
+					title="Logout session"
+					description="Do you want to log out of this session? This action is irreversible."
+					onSuccess={logout}
+				/>
 				<HStack>
 					<Avatar
 						h="35px"

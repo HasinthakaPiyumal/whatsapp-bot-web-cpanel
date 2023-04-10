@@ -16,21 +16,21 @@ import FormTextArea from "../../components/FormTextArea";
 import alertRequest from "../../services/alertRequest";
 
 const Courses = () => {
-	const [title1, setTitle1] = useState();
-	const [title2, setTitle2] = useState();
-	const [title3, setTitle3] = useState();
+	const [title1, setTitle1] = useState("");
+	const [title2, setTitle2] = useState("");
+	const [title3, setTitle3] = useState("");
 	const [type, setType] = useState();
 	const [age, setAge] = useState();
-	const [description1, setDescription1] = useState();
-	const [description2, setDescription2] = useState();
-	const [description3, setDescription3] = useState();
+	const [description1, setDescription1] = useState("");
+	const [description2, setDescription2] = useState("");
+	const [description3, setDescription3] = useState("");
 
 	const [selectedFile1, setSelectedFile1] = useState(null);
 	const [selectedFile2, setSelectedFile2] = useState(null);
 	const [selectedFile3, setSelectedFile3] = useState(null);
-	const [fileName1, setFileName1] = useState();
-	const [fileName2, setFileName2] = useState();
-	const [fileName3, setFileName3] = useState();
+	const [fileName1, setFileName1] = useState("");
+	const [fileName2, setFileName2] = useState("");
+	const [fileName3, setFileName3] = useState("");
 
 	const handleFileChange1 = (event) => {
 		setSelectedFile1(event.target.files[0]);

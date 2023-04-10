@@ -17,6 +17,7 @@ import FormInput from "../../components/FormInput";
 import FormButton from "../../components/FormButton";
 import alertRequest from "../../services/alertRequest";
 import { FaTimes } from "react-icons/fa";
+import AlertBox from "../../components/AlertBox";
 const WhiteList = () => {
 	const [table, setTable] = useState([]);
 	const [number, setNumber] = useState();
@@ -31,10 +32,10 @@ const WhiteList = () => {
 
 	function clear() {
 		setNumber("");
-        getTable();
+		getTable();
 	}
-	function submit(type = 1,nb) {
-		const data = { number: nb?nb:number, type: type };
+	function submit(type = 1, nb) {
+		const data = { number: nb ? nb : number, type: type };
 		alertRequest.post("/number/add", data, clear);
 	}
 	return (
@@ -50,7 +51,10 @@ const WhiteList = () => {
 					type="number"
 					required
 				/>
-				<FormButton onClick={()=>submit()} sx={{ h: "38px", w: "100px" }}>
+				<FormButton
+					onClick={() => submit()}
+					sx={{ h: "38px", w: "100px" }}
+				>
 					Add
 				</FormButton>
 			</Flex>
@@ -120,15 +124,25 @@ const WhiteList = () => {
 										borderRight="1px solid #2A2D3A"
 										width="10px"
 									>
-                                        <Flex width="full" justifyContent="center">
-										<IconButton
-											size="sm"
-											aria-label="Remove"
-											icon={<FaTimes />}
-											onClick={()=>submit(-1,row.number)}
-										/>
-                                        </Flex>
-                                    </Td>
+										<AlertBox
+											title="Remove number from Whitelist"
+											description="Do you want to Remove this number from whitelist? This action is irreversible."
+											onSuccess={() => {
+												submit(-1, row.number);
+											}}
+										>
+											<Flex
+												width="full"
+												justifyContent="center"
+											>
+												<IconButton
+													size="sm"
+													aria-label="Remove"
+													icon={<FaTimes />}
+												/>
+											</Flex>
+										</AlertBox>
+									</Td>
 								</Tr>
 							))}
 					</Tbody>

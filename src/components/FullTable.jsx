@@ -58,7 +58,7 @@ const FullTable = (prop) => {
 									borderRight="1px solid #2A2D3A"
 									width="10px"
 								>
-									{id + 1}
+									{id + 1 + (prop.currentPageIndex || 0) * 10}
 								</Td>
 								{prop.columns.map((column) => {
 									if (column.cell) {

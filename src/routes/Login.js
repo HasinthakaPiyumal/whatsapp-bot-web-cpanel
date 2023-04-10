@@ -39,7 +39,6 @@ function LoginPage() {
 	const navigate = useNavigate();
 
 	function onLogged(data) {
-		console.log(data);
 		setAccessTokenCookie(data.accessToken);
 		// navigate("/dashboard");
 		window.location.href = "/dashboard";

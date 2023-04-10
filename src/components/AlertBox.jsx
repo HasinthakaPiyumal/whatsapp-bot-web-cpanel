@@ -22,9 +22,13 @@ const AlertBox = (prop) => {
 	}
 	return (
 		<>
-			<Button sx={prop.button.sx} onClick={onOpen}>
-				{prop.button.body}
-			</Button>
+			{prop.children ? (
+				<div  onClick={onOpen}>{prop.children}</div>
+			) : (
+				<Button sx={prop.button.sx} onClick={onOpen}>
+					{prop.button.body}
+				</Button>
+			)}
 			<AlertDialog
 				motionPreset="slideInBottom"
 				leastDestructiveRef={cancelRef}

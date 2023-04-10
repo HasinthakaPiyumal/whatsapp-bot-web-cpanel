@@ -162,15 +162,6 @@ const LevelWiseAccordion = (prop) => {
 						</Flex>
 					</Flex>
 				</Flex>
-				{/* {data.data.map((item, index) => (
-					<FormInput
-						placeholder="Enter option display text"
-						label={index === 0 ? "Selection Data" : undefined}
-						sx={{ mt: "5px" }}
-						value={item && item.text_1}
-						onChange={(e) => console.log(e)}
-					/>
-				))} */}
 			</Flex>
 			<Divider orientation="horizontal" marginY="30px" />
 
@@ -262,15 +253,6 @@ const LevelWiseAccordion = (prop) => {
 						</Flex>
 					</Flex>
 				</Flex>
-				{/* {data.data.map((item, index) => (
-					<FormInput
-						placeholder="Enter option display text"
-						label={index === 0 ? "Selection Data" : undefined}
-						sx={{ mt: "5px" }}
-						value={item && item.text_2}
-						onChange={(e) => console.log(e)}
-					/>
-				))} */}
 			</Flex>
 			<Divider orientation="horizontal" marginY="30px" />
 
@@ -363,15 +345,6 @@ const LevelWiseAccordion = (prop) => {
 						</Flex>
 					</Flex>
 				</Flex>
-				{/* {data.data.map((item, index) => (
-					<FormInput
-						placeholder="Enter option display text"
-						label={index === 0 ? "Selection Data" : undefined}
-						sx={{ mt: "5px" }}
-						value={item && item.text_3}
-						onChange={(e) => console.log(e)}
-					/>
-				))} */}
 			</Flex>
 			<Divider orientation="horizontal" marginY="30px" />
 			<Flex justifyContent="end">

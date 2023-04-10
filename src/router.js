@@ -12,13 +12,11 @@ const router = [
 		element: <LoginPage />,
         loader: async () => {
 			try {
-				console.log(accessToken);
 				const isAuthenticated = await axios.post(
 					process.env.REACT_APP_SOCKET_CONNECTION + "/authenticate",
 					{ accessToken: accessToken }
 				);
 				const auth = isAuthenticated.data;
-				console.log(auth);
 				if (auth.status) {
 					return redirect("/dashboard");
 				}
@@ -31,13 +29,11 @@ const router = [
 		element: <RootLayout />,
 		loader: async () => {
 			try {
-				console.log(accessToken);
 				const isAuthenticated = await axios.post(
 					process.env.REACT_APP_SOCKET_CONNECTION + "/authenticate",
 					{ accessToken: accessToken }
 				);
 				const auth = isAuthenticated.data;
-				console.log(auth);
 				if (auth.status) {
 					return <RootLayout />;
 				}

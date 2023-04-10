@@ -19,7 +19,6 @@ const LevelWiseKeywords = () => {
 	async function getLevelsData() {
 		const data = await requests.get("/level/list", {}, { level: 1 });
 		setData(data.data);
-		console.log(data.data);
 	}
 	useEffect(() => {
 		getLevelsData();

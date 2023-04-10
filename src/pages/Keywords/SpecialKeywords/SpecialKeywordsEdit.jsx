@@ -343,7 +343,6 @@ const SpecialKeywords = () => {
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
 		const id = params.get("id");
-		console.log(id);
 		getData(parseInt(id));
 	}, []);
 	function removeImg(id, callback) {

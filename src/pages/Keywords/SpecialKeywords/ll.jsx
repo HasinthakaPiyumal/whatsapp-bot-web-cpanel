@@ -274,13 +274,11 @@ const SpecialKeywordsEdit = (props) => {
 	}
 
 	async function getData(id) {
-		console.log(id);
 		let data = await requests.post(
 			"/special-messages/view",
 			{},
 			{ id: id }
 		);
-		console.log(data);
 		data = data.data;
 		setMessage1(data.lang1.text);
 		setMessageId1(data.lang1.id);
@@ -304,7 +302,6 @@ const SpecialKeywordsEdit = (props) => {
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
 		const id = params.get("id");
-		console.log(id);
 		getData(parseInt(id));
 	}, []);
 

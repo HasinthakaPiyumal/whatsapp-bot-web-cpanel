@@ -46,7 +46,6 @@ const SideBar = (prop) => {
 	var paths = useLocation().pathname.split("/");
 	// var currentPath = paths[1] + (paths[2] ? "/"+paths[2] : "");
 	var currentPath = paths[1];
-	console.log(currentPath);
 	if (currentPath === "") {
 		currentPath = "dashboard";
 	}
@@ -138,7 +137,6 @@ const SideBar = (prop) => {
 				{sidebarItems.map((item, id) => {
 					const iconColor = pickRandomColor(id);
 					if (item.back) return "";
-					console.log(item);
 					return (
 						<React.Fragment key={id}>
 							<div
