@@ -6,12 +6,13 @@ import { useNavigate } from "react-router-dom";
 import FormButton from "./FormButton";
 import AlertBox from "./AlertBox";
 import Cookies from "js-cookie";
+import { HamburgerIcon } from "@chakra-ui/icons";
 
 function logout() {
 	Cookies.remove("access_token");
 	window.location.reload();
 }
-const Navbar = () => {
+const Navbar = (prop) => {
 	const navBarContainerStyles = {
 		bg: "brand.800",
 		h: "70px",
@@ -21,15 +22,38 @@ const Navbar = () => {
 		color: "brand.100",
 	};
 	const navigation = useNavigate();
+	const { sidebar, setSidebar } = prop;
 	return (
 		<Flex
 			sx={navBarContainerStyles}
 			justifyContent="space-between"
 			gap="100px"
 		>
-			<FormButton onClick={() => navigation("/special-keywords/add")}>
-				Add New Keyword
-			</FormButton>
+			<div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+				<HamburgerIcon
+					boxSize={5}
+					color="white"
+					cursor="pointer"
+					onClick={() => setSidebar(!sidebar)}
+					display={"none"}
+					sx={{
+						"@media (max-width: 768px)": {
+							display: "flex",
+						},
+					}}
+				/>
+				<FormButton
+					onClick={() => navigation("/special-keywords/add")}
+					display={"flex"}
+					sx={{
+						"@media (max-width: 768px)": {
+							display: " none",
+						},
+					}}
+				>
+					Add New Keyword
+				</FormButton>
+			</div>
 
 			<Flex alignItems="center" gap="20px">
 				<RxDashboard

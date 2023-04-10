@@ -38,7 +38,7 @@ const SpecialKeywordsList = () => {
 	}, []);
 
 	return (
-		<Container>
+		<Container sx={{w:"calc( 100% - 64px )"}}>
 			<FullTable
 				table={splitArray(table)[currentPageIndex]}
 				tableId={1}

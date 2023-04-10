@@ -184,6 +184,14 @@ const UserSubmission = () => {
 								fontSize="14px"
 								borderBottomColor="#2A2D3A"
 							>
+								Time
+							</Th>
+							<Th
+								color="#6c7293"
+								fontWeight="bold"
+								fontSize="14px"
+								borderBottomColor="#2A2D3A"
+							>
 								Data
 							</Th>
 							<Th
@@ -199,77 +207,91 @@ const UserSubmission = () => {
 					<Tbody>
 						{splitArray(table)[currentPageIndex] &&
 							splitArray(table)[currentPageIndex].map(
-								(row, id) => (
-									<Tr>
-										<Td
-											py="10px"
-											color="#6c7293"
-											borderBottomColor="#2A2D3A"
-											borderRight="1px solid #2A2D3A"
-											width="10px"
-										>
-											{id +
-												1 +
-												(currentPageIndex || 0) * 10}
-										</Td>
-
-										<Td
-											py="10px"
-											color="#6c7293"
-											borderBottomColor="#2A2D3A"
-											borderRight="1px solid #2A2D3A"
-										>
-											{extractNumber(row.whatsapp_id)}
-										</Td>
-										<Td
-											py="10px"
-											color="#6c7293"
-											borderBottomColor="#2A2D3A"
-											borderRight="1px solid #2A2D3A"
-										>
-											{row.title_1}
-										</Td>
-										<Td
-											py="10px"
-											color="#6c7293"
-											borderBottomColor="#2A2D3A"
-											borderRight="1px solid #2A2D3A"
-											width="10px"
-										>
-											<FormView
-												markAsRead={markAsRead}
-												row={row}
-											/>
-										</Td>
-
-										<Td
-											py="10px"
-											color="#6c7293"
-											borderBottomColor="#2A2D3A"
-											borderRight="1px solid #2A2D3A"
-											width="10px"
-										>
-											<AlertBox
-												title="Delete this Form"
-												description="Do you want to delete this form? This action is irreversible."
-												onSuccess={() => {
-													remove(row.id);
-												}}
+								(row, id) => {
+                                    const date = new Date(
+										parseFloat(row.time)
+									);
+									return (
+										<Tr>
+											<Td
+												py="10px"
+												color="#6c7293"
+												borderBottomColor="#2A2D3A"
+												borderRight="1px solid #2A2D3A"
+												width="10px"
 											>
-												<Flex
-													width="full"
-													justifyContent="center"
+												{id +
+													1 +
+													(currentPageIndex || 0) *
+														10}
+											</Td>
+
+											<Td
+												py="10px"
+												color="#6c7293"
+												borderBottomColor="#2A2D3A"
+												borderRight="1px solid #2A2D3A"
+											>
+												{extractNumber(row.whatsapp_id)}
+											</Td>
+											<Td
+												py="10px"
+												color="#6c7293"
+												borderBottomColor="#2A2D3A"
+												borderRight="1px solid #2A2D3A"
+											>
+												{row.title_1}
+											</Td>
+											<Td
+												py="10px"
+												color="#6c7293"
+												borderBottomColor="#2A2D3A"
+												borderRight="1px solid #2A2D3A"
+											>
+												{date.toLocaleString()}
+											</Td>
+											<Td
+												py="10px"
+												color="#6c7293"
+												borderBottomColor="#2A2D3A"
+												borderRight="1px solid #2A2D3A"
+												width="10px"
+											>
+												<FormView
+													markAsRead={markAsRead}
+													row={row}
+												/>
+											</Td>
+
+											<Td
+												py="10px"
+												color="#6c7293"
+												borderBottomColor="#2A2D3A"
+												borderRight="1px solid #2A2D3A"
+												width="10px"
+											>
+												<AlertBox
+													title="Delete this Form"
+													description="Do you want to delete this form? This action is irreversible."
+													onSuccess={() => {
+														remove(row.id);
+													}}
 												>
-													<IconButton
-														size="sm"
-														aria-label="Remove"
-														icon={<FaTimes />}
-													/>
-												</Flex>
-											</AlertBox>
-										</Td>
-									</Tr>
-								)
+													<Flex
+														width="full"
+														justifyContent="center"
+													>
+														<IconButton
+															size="sm"
+															aria-label="Remove"
+															icon={<FaTimes />}
+														/>
+													</Flex>
+												</AlertBox>
+											</Td>
+										</Tr>
+									);
+								}
 							)}
 					</Tbody>
 				</Table>

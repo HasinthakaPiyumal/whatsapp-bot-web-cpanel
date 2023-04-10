@@ -27,14 +27,12 @@ const BreadCrumb = (prop) => {
 					{pathnames.map((path, id) => (
 						<React.Fragment key={id}>
 							<SlArrowRight color="#6c7293" fontSize={12} />
-							<Link to={path}>
-								<Text
-									textTransform="capitalize"
-									_hover={{ color: "brand.200" }}
-								>
-									{path}
-								</Text>
-							</Link>
+							<Text
+								textTransform="capitalize"
+								_hover={{ color: "brand.200" }}
+							>
+								{path}
+							</Text>
 						</React.Fragment>
 					))}
 				</Flex>

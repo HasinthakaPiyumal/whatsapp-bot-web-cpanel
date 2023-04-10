@@ -39,7 +39,7 @@ const List = () => {
 	}, []);
 
 	return (
-		<Container>
+		<Container sx={{w:"calc( 100% - 64px )"}}>
 			<FullTable
 				table={table}
 				tableId={2}

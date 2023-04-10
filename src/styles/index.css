@@ -15,3 +15,31 @@
         background-position: 0 50%;
     }
 }
+
+.sidebar{
+    position:relative;
+    z-index: 10;
+}
+.sidebar-background{
+    display: none;
+    position: fixed;
+    background: #00000077;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+}
+.outlet-container{
+    width: calc(100% - 244px);
+}
+@media screen and (max-width: 768px) {
+    .sidebar{
+        position:fixed;
+    }
+    .sidebar-background{
+        display: flex;
+    }
+    .outlet-container{
+        width: 100%;
+    }
+}

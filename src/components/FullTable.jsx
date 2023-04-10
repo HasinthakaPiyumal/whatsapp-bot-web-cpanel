@@ -19,6 +19,8 @@ const FullTable = (prop) => {
 			color="white"
 			border="1px solid #2A2D3A"
 			borderRadius="4px"
+            overflowX={"auto"}
+            width="full"
 		>
 			<Table variant="simple">
 				<Thead>

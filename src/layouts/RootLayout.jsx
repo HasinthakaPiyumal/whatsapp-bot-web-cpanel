@@ -5,7 +5,7 @@ import Dashboard from "../pages/Session/Index";
 import { useLocation } from "react-router-dom";
 import BreadCrumb from "../components/BreadCrumb";
 import { sidebarItems } from "../data/sidebar";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Box } from "@chakra-ui/react";
 
 function getTitleByPath(path, list) {
@@ -35,14 +35,27 @@ const RootLayout = (prop) => {
 			"CPanel - " +
 			titled(getTitleByPath(currentPath || "dashboard", sidebarItems));
 	}, [currentPath]);
+	const [sidebar, setSidebar] = useState(true);
 
 	return (
-		<div style={{ display: "flex" }}>
-			<div style={{ flex: "fixed", width: "244px" }}>
-				<Sidebar parentId={prop.parentId} />
+		<div style={{ display: "flex", position: "relative", width: "100%" }}>
+			<div className="sidebar">
+				<Sidebar
+					parentId={prop.parentId}
+					sidebar={sidebar}
+					setSidebar={setSidebar}
+				/>
 			</div>
-			<div style={{ flex: "auto", background: "#0F1015" }}>
-				<Navbar />
+			<div
+				style={{
+					// flex: "auto",
+					background: "#0F1015",
+					position: "relative",
+					
+				}}
+                className="outlet-container"
+			>
+				<Navbar sidebar={sidebar} setSidebar={setSidebar} />
 				<Box
 					h="calc(100vh - 70px)"
 					overflowY="scroll"

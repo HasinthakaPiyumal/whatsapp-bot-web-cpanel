@@ -185,12 +185,43 @@ const Profile = (prop) => {
 					</Button>
 				</Stack>
 			</Box>
-			<Container sx={{ w: "full" }}>
-				<Grid templateColumns="repeat(2, 1fr)" gap={6} h="100%">
+			<Flex
+				color="white"
+				width="full"
+				bg="brand.800"
+				// mx={8}
+				my={4}
+				mr={0}
+				p={7}
+				borderRadius="4px"
+				flexDirection="column"
+				sx={{
+					"@media (max-width: 768px)": {
+						flexDirection: "column",
+					},
+				}}
+			>
+				<Grid
+					// templateColumns="repeat(2, 1fr)"
+					gap={6}
+					h="100%"
+					sx={{
+						gridTemplateColumns: "repeat(2, 1fr)",
+						"@media (max-width: 768px)": {
+							gridTemplateColumns: "repeat(1, 1fr)",
+						},
+					}}
+				>
 					<Skeleton
 						borderRadius="4px"
 						w="100%"
 						isLoaded={getTimeDifference(startTime, now)}
+                        sx={{
+							display: "flex",
+							"@media (max-width: 768px)": {
+								display: "none",
+							},
+						}}
 					>
 						<Box
 							bgGradient="linear(to-r, #7928CA, #FF0080)"
@@ -235,6 +266,7 @@ const Profile = (prop) => {
 						justifyContent="center"
 						transition="background 0.5s ease"
 						backgroundSize="300% 300%"
+						
 					>
 						<Box as={FiUsers} fontSize="2xl" mr={2} />
 						<Text fontSize="xl">{info.usersCount}</Text>
@@ -254,6 +286,7 @@ const Profile = (prop) => {
 						justifyContent="center"
 						transition="background 0.5s ease"
 						backgroundSize="300% 300%"
+                        
 					>
 						<Box as={FaWpforms} fontSize="2xl" mr={2} />
 						<Text fontSize="xl">{info.formsCount}</Text>
@@ -274,6 +307,12 @@ const Profile = (prop) => {
 						transition="background 0.5s ease"
 						backgroundSize="300% 300%"
 						position="relative"
+                        sx={{
+							display: "flex",
+							"@media (max-width: 768px)": {
+								display: "none",
+							},
+						}}
 					>
 						<Text fontSize="xl">{info.messagesCount}</Text>
 
@@ -289,7 +328,7 @@ const Profile = (prop) => {
 						</Flex>
 					</Box>
 				</Grid>
-			</Container>
+			</Flex>
 		</HStack>
 	);
 };
