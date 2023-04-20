@@ -3,6 +3,7 @@ import Container from "../../components/Container";
 
 import requests from "../../util/requests";
 import {
+    Divider,
 	Flex,
 	IconButton,
 	Table,
@@ -21,6 +22,7 @@ import AlertBox from "../../components/AlertBox";
 const WhiteList = () => {
 	const [table, setTable] = useState([]);
 	const [number, setNumber] = useState();
+	const [search, setSearch] = useState("");
 
 	async function getTable() {
 		const data = await requests.post("/number/list", {}, { type: 1 });
@@ -38,6 +40,7 @@ const WhiteList = () => {
 		const data = { number: nb ? nb : number, type: type };
 		alertRequest.post("/number/add", data, clear);
 	}
+
 	return (
 		<Container>
 			<Flex alignItems="end" gap={2}>
@@ -58,11 +61,22 @@ const WhiteList = () => {
 					Add
 				</FormButton>
 			</Flex>
+            <Divider orientation="horizontal" marginY="10px" />
+			<Flex alignItems="start">
+				<FormInput
+					placeholder="Search Number"
+					onChange={(e) => {
+						setSearch(e.target.value);
+					}}
+					value={search}
+					type="number"
+				/>
+			</Flex>
 			<TableContainer
 				color="white"
 				border="1px solid #2A2D3A"
 				borderRadius="4px"
-				mt={5}
+				mt={2}
 			>
 				<Table variant="simple">
 					<Thead>
@@ -97,54 +111,56 @@ const WhiteList = () => {
 					</Thead>
 					<Tbody>
 						{table &&
-							table.map((row, id) => (
-								<Tr>
-									<Td
-										py="10px"
-										color="#6c7293"
-										borderBottomColor="#2A2D3A"
-										borderRight="1px solid #2A2D3A"
-										width="10px"
-									>
-										{id + 1}
-									</Td>
-
-									<Td
-										py="10px"
-										color="#6c7293"
-										borderBottomColor="#2A2D3A"
-										borderRight="1px solid #2A2D3A"
-									>
-										{row.number}
-									</Td>
-									<Td
-										py="10px"
-										color="#6c7293"
-										borderBottomColor="#2A2D3A"
-										borderRight="1px solid #2A2D3A"
-										width="10px"
-									>
-										<AlertBox
-											title="Remove number from Whitelist"
-											description="Do you want to Remove this number from whitelist? This action is irreversible."
-											onSuccess={() => {
-												submit(-1, row.number);
-											}}
+							table
+								.filter((item) => item.number.includes(search))
+								.map((row, id) => (
+									<Tr>
+										<Td
+											py="10px"
+											color="#6c7293"
+											borderBottomColor="#2A2D3A"
+											borderRight="1px solid #2A2D3A"
+											width="10px"
 										>
-											<Flex
-												width="full"
-												justifyContent="center"
+											{id + 1}
+										</Td>
+
+										<Td
+											py="10px"
+											color="#6c7293"
+											borderBottomColor="#2A2D3A"
+											borderRight="1px solid #2A2D3A"
+										>
+											{row.number}
+										</Td>
+										<Td
+											py="10px"
+											color="#6c7293"
+											borderBottomColor="#2A2D3A"
+											borderRight="1px solid #2A2D3A"
+											width="10px"
+										>
+											<AlertBox
+												title="Remove number from Whitelist"
+												description="Do you want to Remove this number from whitelist? This action is irreversible."
+												onSuccess={() => {
+													submit(-1, row.number);
+												}}
 											>
-												<IconButton
-													size="sm"
-													aria-label="Remove"
-													icon={<FaTimes />}
-												/>
-											</Flex>
-										</AlertBox>
-									</Td>
-								</Tr>
-							))}
+												<Flex
+													width="full"
+													justifyContent="center"
+												>
+													<IconButton
+														size="sm"
+														aria-label="Remove"
+														icon={<FaTimes />}
+													/>
+												</Flex>
+											</AlertBox>
+										</Td>
+									</Tr>
+								))}
 					</Tbody>
 				</Table>
 			</TableContainer>

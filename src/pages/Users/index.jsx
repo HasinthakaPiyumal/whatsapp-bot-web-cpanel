@@ -4,6 +4,7 @@ import Container from "../../components/Container";
 import requests from "../../util/requests";
 import {
 	Button,
+	Flex,
 	HStack,
 	Table,
 	TableContainer,
@@ -14,6 +15,7 @@ import {
 	Tr,
 } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import FormInput from "../../components/FormInput";
 
 const countries = ["Sri lanka", "India", "bangladesh", "singapore"];
 function extractNumber(text) {
@@ -41,21 +43,38 @@ function splitArray(arr) {
 const List = () => {
 	const [table, setTable] = useState([]);
 	const [currentPageIndex, setCurrentPageIndex] = useState(0);
+	const [search, setSearch] = useState("");
+	const [tempTable, setTempTable] = useState([]);
 
 	async function getTable() {
 		const data = await requests.get("/user");
 		setTable(data.data);
+		setTempTable(data.data);
 	}
 	useEffect(() => {
 		getTable();
 	}, []);
+	useEffect(() => {
+		setTable(tempTable.filter((item) => item.whatsapp_id.includes(search)));
+	}, [search]);
 
 	return (
 		<Container>
+            <Flex alignItems="start">
+				<FormInput
+					placeholder="Search Number"
+					onChange={(e) => {
+						setSearch(e.target.value);
+					}}
+					value={search}
+					type="number"
+				/>
+			</Flex>
 			<TableContainer
 				color="white"
 				border="1px solid #2A2D3A"
 				borderRadius="4px"
+                mt={2}
 			>
 				<Table variant="simple">
 					<Thead>
