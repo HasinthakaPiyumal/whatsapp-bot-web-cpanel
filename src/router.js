@@ -11,6 +11,7 @@ const router = [
 		path: "login",
 		element: <LoginPage />,
         loader: async () => {
+	return redirect("/dashboard");
 			try {
 				const isAuthenticated = await axios.post(
 					process.env.REACT_APP_SOCKET_CONNECTION + "/authenticate",
