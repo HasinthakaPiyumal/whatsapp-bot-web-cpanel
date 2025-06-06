@@ -28,6 +28,7 @@ const router = [
 		path: "/",
 		element: <RootLayout />,
 		loader: async () => {
+				return <RootLayout />;
 			try {
 				const isAuthenticated = await axios.post(
 					process.env.REACT_APP_SOCKET_CONNECTION + "/authenticate",
